@@ -36,7 +36,10 @@ export const certificates = [
   },
   {
     title: "Recognition in GBSSS School",
+    // Tall event photo rather than a document scan — bias the crop toward
+    // the top so faces aren't cut off when it's cropped to a landscape card.
     image: "/images/about/cert-recognition-gbsss.png",
+    objectPosition: "center 20%",
   },
 ];
 

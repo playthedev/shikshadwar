@@ -14,6 +14,7 @@ export function MissionSection() {
             src="/images/home/mission.jpg"
             alt="A young girl at a Shikshadwar community event proudly holds up her own artwork"
             aspect="portrait"
+            sizes="(min-width: 768px) 50vw, 100vw"
           />
         </Reveal>
         <Reveal delay={0.08}>

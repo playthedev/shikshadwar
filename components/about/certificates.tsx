@@ -13,7 +13,15 @@ export function Certificates() {
           {certificates.map((cert, index) => (
             <Reveal key={cert.title} delay={index * 0.06}>
               <div className="overflow-hidden rounded-(--radius) border border-border bg-surface">
-                <Photo src={cert.image} alt={cert.title} aspect="landscape" className="rounded-none border-0" />
+                <Photo
+                  src={cert.image}
+                  alt={cert.title}
+                  aspect="landscape"
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  quality={92}
+                  objectPosition={cert.objectPosition}
+                  className="rounded-none border-0"
+                />
                 <p className="p-5 font-heading text-lg text-ink">{cert.title}</p>
               </div>
             </Reveal>

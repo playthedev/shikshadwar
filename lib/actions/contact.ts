@@ -2,6 +2,7 @@
 
 import { contactSchema } from "@/lib/validations/contact-schema";
 import { siteConfig } from "@/lib/site-config";
+import { contactEmailTemplate, contactAutoReplyTemplate } from "@/lib/email-template";
 
 export type ContactActionState =
   | { status: "idle" }
@@ -48,6 +49,8 @@ export async function submitContactForm(
     };
   }
 
+  const template = contactEmailTemplate(parsed.data);
+
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -57,14 +60,43 @@ export async function submitContactForm(
       },
       body: JSON.stringify({
         from: `Shikshadwar Website <onboarding@resend.dev>`,
-        to: siteConfig.contact.email,
+        // TODO: verify shikshadwarfoundation.org in Resend, then switch back to siteConfig.contact.email.
+        to: "arishkhan3312@gmail.com",
         reply_to: parsed.data.email,
-        subject: `[Website] ${parsed.data.subject}`,
-        text: `From: ${parsed.data.name} <${parsed.data.email}>\n\n${parsed.data.message ?? "(no message)"}`,
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
       }),
     });
 
-    if (!res.ok) throw new Error(`Resend responded ${res.status}`);
+    if (!res.ok) {
+      throw new Error(`Resend responded ${res.status}: ${await res.text()}`);
+    }
+
+    // Best-effort — the enquiry already landed, so a failed auto-reply
+    // (e.g. sandbox mode blocking sends to non-owner addresses) shouldn't
+    // surface as an error to the visitor. Awaited so serverless runtimes
+    // don't freeze the function before the request actually goes out.
+    try {
+      const autoReply = contactAutoReplyTemplate(parsed.data);
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: `Shikshadwar Foundation <onboarding@resend.dev>`,
+          to: parsed.data.email,
+          subject: autoReply.subject,
+          html: autoReply.html,
+          text: autoReply.text,
+        }),
+      });
+    } catch (error) {
+      console.error("[contact-form] auto-reply failed:", error);
+    }
+
     return { status: "success" };
   } catch (error) {
     console.error("[contact-form] delivery failed:", error);

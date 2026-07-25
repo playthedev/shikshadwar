@@ -44,6 +44,8 @@ export function ProgrammeGrid() {
                           src={featured.image.src}
                           alt={featured.image.alt}
                           aspect="landscape"
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          quality={92}
                           className="h-full rounded-none border-0 transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>

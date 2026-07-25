@@ -14,8 +14,9 @@ export function ProgrammeHero({ programme }: { programme: Programme }) {
             src={programme.image.src}
             alt={programme.image.alt}
             fill
-            priority
+            preload
             sizes="100vw"
+            quality={92}
             className="object-cover"
           />
         ) : (

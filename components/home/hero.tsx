@@ -14,6 +14,7 @@ import { heroSlides } from "@/lib/hero-slides";
 import { cn } from "@/lib/utils";
 
 const AUTOPLAY_MS = 3000;
+const FALLBACK_IMAGE = "/images/home/mission.jpg";
 
 /**
  * Hero slider carrying forward all six slides from the legacy homepage
@@ -26,6 +27,7 @@ export function Hero() {
   const reducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const [failedSlides, setFailedSlides] = useState<Record<number, boolean>>({});
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -75,12 +77,14 @@ export function Hero() {
               transition={{ duration: (AUTOPLAY_MS + 1200) / 1000, ease: "linear" }}
             >
               <Image
-                src={slide.image}
+                src={failedSlides[index] ? FALLBACK_IMAGE : slide.image}
                 alt={slide.alt}
                 fill
-                priority={index === 0}
+                preload={index === 0}
                 sizes="100vw"
-                style={{ objectPosition: slide.objectPosition }}
+                quality={100}
+                onError={() => setFailedSlides((prev) => ({ ...prev, [index]: true }))}
+                style={{ objectPosition: failedSlides[index] ? "center 30%" : slide.objectPosition }}
                 className="object-cover"
               />
             </motion.div>

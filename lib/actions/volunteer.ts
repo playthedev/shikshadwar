@@ -2,6 +2,7 @@
 
 import { volunteerSchema } from "@/lib/validations/volunteer-schema";
 import { siteConfig } from "@/lib/site-config";
+import { volunteerEmailTemplate } from "@/lib/email-template";
 
 export type VolunteerActionState =
   | { status: "idle" }
@@ -45,6 +46,8 @@ export async function submitVolunteerForm(
     };
   }
 
+  const template = volunteerEmailTemplate(parsed.data);
+
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -54,13 +57,17 @@ export async function submitVolunteerForm(
       },
       body: JSON.stringify({
         from: `Shikshadwar Website <onboarding@resend.dev>`,
-        to: siteConfig.contact.email,
-        subject: `[Website] New volunteer sign-up: ${parsed.data.name}`,
-        text: `Name: ${parsed.data.name}\nDate of birth: ${parsed.data.dateOfBirth}\nAddress: ${parsed.data.address}\nOccupation: ${parsed.data.occupation ?? "—"}`,
+        // TODO: verify shikshadwarfoundation.org in Resend, then switch back to siteConfig.contact.email.
+        to: "arishkhan3312@gmail.com",
+        subject: template.subject,
+        html: template.html,
+        text: template.text,
       }),
     });
 
-    if (!res.ok) throw new Error(`Resend responded ${res.status}`);
+    if (!res.ok) {
+      throw new Error(`Resend responded ${res.status}: ${await res.text()}`);
+    }
     return { status: "success" };
   } catch (error) {
     console.error("[volunteer-form] delivery failed:", error);

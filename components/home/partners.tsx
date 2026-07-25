@@ -25,6 +25,7 @@ export function Partners() {
                   alt={partner.name}
                   fill
                   sizes="192px"
+                  quality={92}
                   className="object-contain grayscale transition-all duration-300 group-hover:scale-105 group-hover:grayscale-0"
                 />
               </div>

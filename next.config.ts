@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
     formats: ["image/avif", "image/webp"],
+    // 85 is the general content-photo tier; 92 is reserved for above-the-fold
+    // hero/banner images and text-bearing assets (logo, certificates) where
+    // compression artifacts are most visible.
+    qualities: [75, 85, 92, 100],
     remotePatterns: [
       {
         protocol: "https",

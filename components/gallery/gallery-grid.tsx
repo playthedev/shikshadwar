@@ -74,7 +74,8 @@ export function GalleryGrid() {
               src={image.src}
               alt={image.alt}
               fill
-              sizes="(min-width: 768px) 25vw, 50vw"
+              sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
+              quality={85}
               className="object-cover transition-transform duration-500 group-hover:scale-110"
             />
             <span
@@ -97,6 +98,7 @@ export function GalleryGrid() {
                 alt={visible[active].alt}
                 fill
                 sizes="768px"
+                quality={92}
                 className="object-contain bg-ink"
               />
             </div>

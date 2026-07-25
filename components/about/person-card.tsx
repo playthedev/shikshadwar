@@ -19,7 +19,8 @@ export function PersonCard({ name, role, image, delay = 0 }: PersonCardProps) {
               alt={`Portrait of ${name}`}
               fill
               sizes="176px"
-              className="object-cover"
+              quality={85}
+              className="object-cover object-top"
             />
           ) : (
             <div

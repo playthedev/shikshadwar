@@ -6,8 +6,10 @@ interface PhotoProps {
   alt: string;
   aspect?: "square" | "portrait" | "landscape" | "wide";
   className?: string;
-  priority?: boolean;
+  preload?: boolean;
   sizes?: string;
+  quality?: number;
+  objectPosition?: string;
 }
 
 const aspectClass: Record<NonNullable<PhotoProps["aspect"]>, string> = {
@@ -22,8 +24,10 @@ export function Photo({
   alt,
   aspect = "landscape",
   className,
-  priority = false,
+  preload = false,
   sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
+  quality = 85,
+  objectPosition,
 }: PhotoProps) {
   return (
     <div
@@ -37,8 +41,10 @@ export function Photo({
         src={src}
         alt={alt}
         fill
-        priority={priority}
+        preload={preload}
         sizes={sizes}
+        quality={quality}
+        style={objectPosition ? { objectPosition } : undefined}
         className="object-cover"
       />
     </div>

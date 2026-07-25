@@ -12,6 +12,7 @@ export function AboutIntro() {
             src={aboutIntro.image.src}
             alt={aboutIntro.image.alt}
             aspect="portrait"
+            sizes="(min-width: 768px) 45vw, 100vw"
             className="md:sticky md:top-24"
           />
         </Reveal>

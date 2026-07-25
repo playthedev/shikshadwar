@@ -38,12 +38,13 @@ export function SiteHeader() {
       <Container className="flex h-18 items-center justify-between py-3">
         <Link href="/" className="flex items-center" aria-label="Shikshadwar Foundation, home">
           <Image
-            src="/logo.png"
+            src="/logo-nav.png"
             alt=""
             width={188}
-            height={120}
-            priority
-            className="h-16 w-auto mix-blend-multiply"
+            height={116}
+            preload
+            quality={92}
+            className="h-16 w-auto"
           />
         </Link>
 
