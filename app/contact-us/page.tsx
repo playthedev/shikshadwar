@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
-import { RevealText } from "@/components/shared/reveal-text";
 import { ContactForm } from "@/components/forms/contact-form";
+import { ContactMap } from "@/components/contact/contact-map";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -39,56 +39,69 @@ const contactInfo = [
 export default function ContactUsPage() {
   return (
     <>
-      <section className="bg-ink pt-32 pb-16">
+      <PageHero
+        breadcrumb="Contact Us"
+        eyebrow="Contact"
+        title="Get in touch."
+        description="Give a helping hand to support the underprivileged."
+      />
+
+      <section className="py-[clamp(4rem,8vw,8rem)]">
         <Container>
-          <nav aria-label="Breadcrumb" className="mb-4 text-sm text-paper/60">
-            <Link href="/" className="hover:text-paper">
-              Home
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-paper/90">Contact Us</span>
-          </nav>
-          <h1 className="max-w-xl text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] font-heading text-paper">
-            <RevealText text="Get in touch." mode="mount" />
-          </h1>
-          <p className="mt-4 max-w-md text-lg text-paper/75">
-            Give a helping hand to support the underprivileged.
-          </p>
-        </Container>
-      </section>
-
-      <section className="py-[clamp(3.5rem,7vw,6rem)]">
-        <Container className="grid gap-12 md:grid-cols-[1fr_1.4fr]">
-          <div className="space-y-8">
-            {contactInfo.map((item, index) => (
-              <Reveal key={item.label} delay={index * 0.06}>
-                <div className="flex gap-4">
-                  <item.icon aria-hidden="true" className="mt-1 size-5 shrink-0 text-rust" />
-                  <div>
-                    <p className="text-sm font-semibold tracking-wide text-muted-foreground uppercase">
-                      {item.label}
-                    </p>
-                    {item.href ? (
-                      <a href={item.href} className="mt-1 block text-md text-ink hover:text-rust">
-                        {item.value}
-                      </a>
-                    ) : (
-                      <p className="mt-1 text-md text-ink">{item.value}</p>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal delay={0.1}>
-            <div className="rounded-(--radius) border border-border bg-surface p-6 md:p-8">
-              <p className="mb-6 font-heading text-xl text-ink">We would love to hear from you.</p>
-              <ContactForm />
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-4">
+              <div className="lg:sticky lg:top-28">
+                <ul className="border-t border-border">
+                  {contactInfo.map((item, index) => (
+                    <Reveal as="li" key={item.label} delay={index * 0.06}>
+                      <div className="group border-b border-border py-6">
+                        <div className="flex items-center gap-3">
+                          <item.icon
+                            aria-hidden="true"
+                            className="size-4 shrink-0 text-rust transition-transform duration-500 ease-(--ease-out-custom) group-hover:-translate-y-0.5"
+                          />
+                          <p className="text-eyebrow text-muted-foreground uppercase">
+                            {item.label}
+                          </p>
+                        </div>
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            className="mt-3 block font-heading text-h4 text-ink transition-colors hover:text-rust"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="mt-3 font-heading text-h4 leading-snug text-ink">
+                            {item.value}
+                          </p>
+                        )}
+                      </div>
+                    </Reveal>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </Reveal>
+
+            <Reveal delay={0.12} className="lg:col-span-7 lg:col-start-6">
+              <div className="rounded-(--radius) border border-border bg-surface p-6 md:p-9">
+                <div className="flex items-center gap-3">
+                  <span aria-hidden="true" className="h-px w-8 shrink-0 bg-rust" />
+                  <p className="text-eyebrow text-rust uppercase">Send a message</p>
+                </div>
+                <h2 className="mt-5 font-heading text-h3 text-balance text-ink">
+                  We would love to hear from you.
+                </h2>
+                <div className="mt-8">
+                  <ContactForm />
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </Container>
       </section>
+
+      <ContactMap />
     </>
   );
 }

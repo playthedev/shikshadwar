@@ -16,6 +16,8 @@ export async function submitVolunteerForm(
 ): Promise<VolunteerActionState> {
   const raw = {
     name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
     dateOfBirth: formData.get("dateOfBirth"),
     address: formData.get("address"),
     occupation: formData.get("occupation"),

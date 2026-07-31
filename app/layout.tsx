@@ -3,6 +3,7 @@ import { Eczar, Mukta } from "next/font/google";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ScrollProgress } from "@/components/shared/scroll-progress";
+import { WhatsappButton } from "@/components/shared/whatsapp-button";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -89,6 +90,7 @@ export default function RootLayout({
           {children}
         </main>
         <SiteFooter />
+        <WhatsappButton />
       </body>
     </html>
   );

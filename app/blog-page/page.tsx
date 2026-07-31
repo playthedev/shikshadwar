@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Container } from "@/components/shared/container";
+import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
 import { blogCategoryIcons, blogPosts } from "@/lib/blog";
@@ -15,48 +15,56 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  return (
-    <section className="pt-32 pb-[clamp(3.5rem,7vw,6rem)]">
-      <Container>
-        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-ink">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-ink">Blog</span>
-        </nav>
-        <h1 className="text-[clamp(2rem,4vw,2.75rem)] font-heading text-ink">Blog</h1>
-        <p className="mt-4 max-w-2xl text-md leading-relaxed text-muted-foreground">
-          Field notes, programme updates and stories from the communities we
-          work with.
-        </p>
+  const [featured, ...rest] = blogPosts;
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          {blogPosts.map((post, index) => (
-            <Reveal key={post.slug} delay={index * 0.05}>
-              <article className="flex h-full flex-col overflow-hidden rounded-(--radius) border border-border bg-surface">
-                <PhotoPlaceholder
-                  caption={post.title}
-                  aspect="wide"
-                  tag={post.tag}
-                  icon={blogCategoryIcons[post.category]}
-                  className="rounded-none border-0 border-b"
-                />
-                <div className="flex flex-1 flex-col p-5">
+  return (
+    <>
+      <PageHero
+        breadcrumb="Blog"
+        eyebrow="Field notes"
+        title="Blog"
+        description="Field notes, programme updates and stories from the communities we work with."
+      />
+
+      <section className="py-[clamp(4rem,8vw,8rem)]">
+        <Container>
+          {/* The newest post runs full width before the rest fall into a
+              two-up. Without a lead item every post claims equal weight and
+              the page has no place to start. */}
+          {featured ? (
+            <Reveal>
+              <article className="group grid gap-8 border-b border-border pb-12 lg:grid-cols-12 lg:gap-12">
+                <div className="lg:col-span-7">
+                  <div className="overflow-hidden rounded-(--radius)">
+                    <PhotoPlaceholder
+                      caption={featured.title}
+                      aspect="wide"
+                      tag={featured.tag}
+                      icon={blogCategoryIcons[featured.category]}
+                      className="rounded-none border-0 transition-transform duration-700 ease-(--ease-out-custom) group-hover:scale-[1.02]"
+                    />
+                  </div>
+                </div>
+                <div className="lg:col-span-5 lg:self-center">
                   <span
                     className={cn(
-                      "text-xs font-semibold tracking-wide uppercase",
-                      post.tag === "rust" ? "text-rust" : "text-pine",
+                      "text-eyebrow uppercase",
+                      featured.tag === "rust" ? "text-rust" : "text-pine",
                     )}
                   >
-                    {post.category}
+                    {featured.category}
                   </span>
-                  <h2 className="mt-2 font-heading text-lg text-ink">{post.title}</h2>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                    {post.excerpt}
+                  <h2 className="mt-4 font-heading text-h2 text-balance text-ink">
+                    {featured.title}
+                  </h2>
+                  <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                    {featured.excerpt}
                   </p>
-                  <time dateTime={post.date} className="mt-4 text-xs text-muted-foreground">
-                    {new Date(post.date).toLocaleDateString("en-IN", {
+                  <time
+                    dateTime={featured.date}
+                    className="mt-6 block text-xs tracking-wide text-muted-foreground uppercase"
+                  >
+                    {new Date(featured.date).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "long",
                       year: "numeric",
@@ -65,9 +73,49 @@ export default function BlogPage() {
                 </div>
               </article>
             </Reveal>
-          ))}
-        </div>
-      </Container>
-    </section>
+          ) : null}
+
+          <div className="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2">
+            {rest.map((post, index) => (
+              <Reveal key={post.slug} delay={(index % 2) * 0.06}>
+                <article className="group">
+                  <div className="overflow-hidden rounded-(--radius)">
+                    <PhotoPlaceholder
+                      caption={post.title}
+                      aspect="wide"
+                      tag={post.tag}
+                      icon={blogCategoryIcons[post.category]}
+                      className="rounded-none border-0 transition-transform duration-700 ease-(--ease-out-custom) group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <span
+                    className={cn(
+                      "mt-5 block text-eyebrow uppercase",
+                      post.tag === "rust" ? "text-rust" : "text-pine",
+                    )}
+                  >
+                    {post.category}
+                  </span>
+                  <h2 className="mt-2 font-heading text-h4 text-balance text-ink">{post.title}</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {post.excerpt}
+                  </p>
+                  <time
+                    dateTime={post.date}
+                    className="mt-4 block text-xs tracking-wide text-muted-foreground uppercase"
+                  >
+                    {new Date(post.date).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </time>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }

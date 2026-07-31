@@ -5,57 +5,60 @@ export interface HeroSlide {
   headline: string;
   subheading: string;
   ctaLabel: string;
+  /** Programme page this slide's banner opens on click. */
+  href: string;
 }
 
-// Verbatim from the legacy site's 6-slide hero, carried forward per the
-// client's request to keep all existing homepage content and imagery.
+// Same five banners, headlines and click-through destinations as the
+// client's reference site — one per programme, in the same order.
 export const heroSlides: HeroSlide[] = [
   {
-    image: "/images/hero/slide-01.png",
-    alt: "Girls at a Shikshadwar community centre in Delhi throw their hands up mid-celebration, confident and smiling",
-    objectPosition: "center 20%",
-    headline: "Change Lives",
-    subheading: "Help educate children.",
+    image: "/images/hero/education-banner.png",
+    alt: "Two students at a Shikshadwar education centre smile while holding their schoolbooks",
+    objectPosition: "center 15%",
+    headline: "Education is Empowerment",
+    subheading:
+      "Holistic education model — academic excellence with emotional intelligence and life skills.",
     ctaLabel: "Donate Now",
+    href: "/education/",
   },
   {
-    image: "/images/hero/slide-02.png",
-    alt: "Children raise their hands eagerly during a Shikshadwar workshop session",
+    image: "/images/hero/livelihood-banner.jpg",
+    alt: "Community members and children gather in front of a Shikshadwar Foundation banner at a non-formal education session",
+    objectPosition: "center 25%",
+    headline: "Empowering Youth With Skills for Sustainable Livelihoods",
+    subheading:
+      "Focused on people belonging to marginalized communities for better income and enhanced quality of life.",
+    ctaLabel: "Donate Now",
+    href: "/livelihood/",
+  },
+  {
+    image: "/images/hero/healthcare-banner.png",
+    alt: "A volunteer leads a health and hygiene awareness session for a group of young people",
+    objectPosition: "center 40%",
+    headline: "Healthcare Awareness for All",
+    subheading:
+      "Collaboration with government and civil society for quality healthcare services.",
+    ctaLabel: "Donate Now",
+    href: "/healthcare/",
+  },
+  {
+    image: "/images/hero/youth-empowerment-banner.jpg",
+    alt: "A group of young volunteers stand together in front of a Shikshadwar Foundation notice board",
+    objectPosition: "center 35%",
+    headline: "Empower. Skill. Employ. Transform.",
+    subheading: "Empower. Skill. Employ. Transform. — building youth as leaders of social change.",
+    ctaLabel: "Donate Now",
+    href: "/youth-empowerment/",
+  },
+  {
+    image: "/images/hero/sustainable-development-banner.png",
+    alt: "Two volunteers plant a sapling together as part of a Shikshadwar tree-plantation drive",
     objectPosition: "center 30%",
-    headline: "Make an Impact",
-    subheading: "Bring a smile to their faces — they deserve to be healthy and happy.",
-    ctaLabel: "Donate for Healthy Communities",
-  },
-  {
-    image: "/images/hero/slide-03.png",
-    alt: "Shikshadwar staff and community members gather for a gender-based-violence awareness session",
-    objectPosition: "center 25%",
-    headline: "Be the Ray of Hope",
-    subheading: "Help skill them to improve their financial security.",
-    ctaLabel: "Make an Impact, Donate Now",
-  },
-  {
-    image: "/images/hero/slide-04.png",
-    alt: "A young girl speaks confidently in front of a Shikshadwar Foundation banner",
-    objectPosition: "center 15%",
-    headline: "Be the Catalyst",
-    subheading: "Help us drive sustainable development.",
-    ctaLabel: "Make an Impact, Donate Now",
-  },
-  {
-    image: "/images/hero/slide-05.png",
-    alt: "Community members and Shikshadwar volunteers pose together after a youth session",
-    objectPosition: "center 25%",
-    headline: "Bring Them to the Forefront",
-    subheading: "Underprivileged youth need you.",
-    ctaLabel: "Develop Their Future, Donate Now",
-  },
-  {
-    image: "/images/hero/slide-06.png",
-    alt: "A young girl stands and speaks in front of a Shikshadwar Foundation banner during a community session",
-    objectPosition: "center 15%",
-    headline: "Save Them in Crisis",
-    subheading: "Victims of disasters and calamities need you.",
-    ctaLabel: "Don't Leave Them Behind, Donate Now",
+    headline: "Green Earth Begins With One Tree",
+    subheading:
+      "Awareness and eco-friendly household and agricultural practices in a rural context.",
+    ctaLabel: "Donate Now",
+    href: "/sustainable-development/",
   },
 ];

@@ -1,58 +1,63 @@
-import Link from "next/link";
-import { Download, FileText } from "lucide-react";
+import { Download } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
-import { Magnetic } from "@/components/shared/magnetic";
 import type { DocumentEntry } from "@/lib/documents";
 
 export function DocumentList({
   title,
   description,
   documents,
+  eyebrow = "Transparency",
 }: {
   title: string;
   description: string;
   documents: DocumentEntry[];
+  eyebrow?: string;
 }) {
   return (
-    <section className="pt-32 pb-[clamp(3.5rem,7vw,6rem)]">
-      <Container className="max-w-3xl">
-        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-ink">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-ink">{title}</span>
-        </nav>
-        <h1 className="text-[clamp(2rem,4vw,2.75rem)] font-heading text-ink">{title}</h1>
-        <p className="mt-4 text-md leading-relaxed text-muted-foreground">{description}</p>
+    <>
+      <PageHero breadcrumb={title} eyebrow={eyebrow} title={title} description={description} />
 
-        <ul className="mt-10 divide-y divide-border border-t border-b border-border">
-          {documents.map((doc, index) => (
-            <Reveal as="li" key={doc.file} delay={index * 0.05}>
-              <div className="flex items-center justify-between gap-4 py-5">
-                <div className="flex items-center gap-4">
-                  <FileText aria-hidden="true" className="size-5 shrink-0 text-rust" />
-                  <div>
-                    <p className="font-heading text-base text-ink">{doc.title}</p>
-                    <p className="text-xs text-muted-foreground">PDF · {doc.fileSizeLabel}</p>
-                  </div>
-                </div>
-                <Magnetic>
-                  <a
-                    href={doc.file}
-                    download
-                    className="flex items-center gap-1.5 rounded-(--radius) border border-ink/20 px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-rust hover:text-rust"
+      <section className="py-[clamp(4rem,8vw,7rem)]">
+        <Container>
+          {/*
+            Each row is a whole-width target with the filename set at heading
+            scale. The previous version wrapped a small "Download" button on
+            the right, which meant the actual click target on a page whose
+            only purpose is downloading was the smallest element in the row.
+          */}
+          <ul className="border-t border-border">
+            {documents.map((doc, index) => (
+              <Reveal as="li" key={doc.file} delay={index * 0.05}>
+                <a
+                  href={doc.file}
+                  download
+                  className="group flex items-center gap-6 border-b border-border py-7"
+                >
+                  <span className="font-heading text-sm tabular-nums text-ink/30">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-heading text-h4 text-ink">{doc.title}</span>
+                    <span className="mt-1 block text-xs tracking-wide text-muted-foreground uppercase">
+                      PDF · {doc.fileSizeLabel}
+                    </span>
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className="flex size-11 shrink-0 items-center justify-center rounded-full border border-ink/12 text-ink/45 transition-all duration-300 group-hover:border-rust group-hover:bg-rust group-hover:text-primary-foreground"
                   >
-                    <Download aria-hidden="true" className="size-4" />
-                    Download
-                  </a>
-                </Magnetic>
-              </div>
-            </Reveal>
-          ))}
-        </ul>
-      </Container>
-    </section>
+                    <Download className="size-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                  </span>
+                </a>
+              </Reveal>
+            ))}
+          </ul>
+        </Container>
+      </section>
+    </>
   );
 }

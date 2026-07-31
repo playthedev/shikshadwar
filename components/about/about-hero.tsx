@@ -1,22 +1,17 @@
-import Link from "next/link";
-import { RevealText } from "@/components/shared/reveal-text";
-import { Container } from "@/components/shared/container";
+import { PageHero } from "@/components/shared/page-hero";
 
 export function AboutHero() {
   return (
-    <section className="bg-ink pt-32 pb-16">
-      <Container>
-        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-paper/60">
-          <Link href="/" className="hover:text-paper">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-paper/90">About Us</span>
-        </nav>
-        <h1 className="max-w-2xl text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] font-heading text-paper">
-          <RevealText text="We believe everyone deserves a future." mode="mount" />
-        </h1>
-      </Container>
-    </section>
+    <PageHero
+      breadcrumb="About Us"
+      eyebrow="Who we are"
+      title="We believe everyone deserves a future."
+      description="A Public Charitable Trust that began with a handful of volunteers in the slums of Delhi, and now works across five states."
+      image={{
+        src: "/images/hero/slide-05.png",
+        alt: "",
+        objectPosition: "center 25%",
+      }}
+    />
   );
 }

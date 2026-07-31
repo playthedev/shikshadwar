@@ -15,6 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "media-reports",
     "contact-us",
     "join-us",
+    "donate",
+    "sponsor-a-child",
+    "donate-a-tree",
   ];
 
   const now = new Date();

@@ -19,7 +19,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Container } from "@/components/shared/container";
-import { primaryNav, type NavItem } from "@/lib/nav";
+import { primaryNav, headerCtas, type NavItem } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 function isNavItemActive(pathname: string, item: NavItem) {
@@ -40,11 +40,11 @@ export function SiteHeader() {
           <Image
             src="/logo-nav.png"
             alt=""
-            width={188}
+            width={291}
             height={116}
             preload
-            quality={92}
-            className="h-16 w-auto"
+            quality={100}
+            className="h-14 w-auto md:h-16"
           />
         </Link>
 
@@ -104,11 +104,19 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <Button
-            render={<Link href="/donate/" />}
+            render={<Link href={headerCtas[0].href} />}
+            nativeButton={false}
+            variant="outline"
+            className="hidden h-10 rounded-(--radius) border-rust px-5 text-sm font-semibold text-rust hover:bg-rust/5 active:translate-y-0 lg:inline-flex"
+          >
+            {headerCtas[0].label}
+          </Button>
+          <Button
+            render={<Link href={headerCtas[1].href} />}
             nativeButton={false}
             className="hidden h-10 rounded-(--radius) bg-rust px-5 text-sm font-semibold text-primary-foreground hover:bg-[var(--rust-strong)] active:translate-y-0 sm:inline-flex"
           >
-            Donate Now
+            {headerCtas[1].label}
           </Button>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -166,12 +174,22 @@ export function SiteHeader() {
                 })}
                 <Button
                   render={
-                    <Link href="/donate/" onClick={() => setMobileOpen(false)} />
+                    <Link href={headerCtas[0].href} onClick={() => setMobileOpen(false)} />
                   }
                   nativeButton={false}
-                  className="mt-4 h-11 rounded-(--radius) bg-rust text-sm font-semibold text-primary-foreground hover:bg-[var(--rust-strong)] active:translate-y-0"
+                  variant="outline"
+                  className="mt-4 h-11 rounded-(--radius) border-rust text-sm font-semibold text-rust hover:bg-rust/5 active:translate-y-0"
                 >
-                  Donate Now
+                  {headerCtas[0].label}
+                </Button>
+                <Button
+                  render={
+                    <Link href={headerCtas[1].href} onClick={() => setMobileOpen(false)} />
+                  }
+                  nativeButton={false}
+                  className="mt-2 h-11 rounded-(--radius) bg-rust text-sm font-semibold text-primary-foreground hover:bg-[var(--rust-strong)] active:translate-y-0"
+                >
+                  {headerCtas[1].label}
                 </Button>
               </nav>
             </SheetContent>

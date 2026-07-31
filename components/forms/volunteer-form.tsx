@@ -26,7 +26,15 @@ export function VolunteerForm() {
     formState: { errors },
   } = useForm<VolunteerFormValues>({
     resolver: zodResolver(volunteerSchema),
-    defaultValues: { name: "", dateOfBirth: "", address: "", occupation: "", company: "" },
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      dateOfBirth: "",
+      address: "",
+      occupation: "",
+      company: "",
+    },
   });
 
   function onSubmit(values: VolunteerFormValues) {
@@ -72,6 +80,28 @@ export function VolunteerForm() {
       </div>
 
       <div>
+        <Label htmlFor="v-email">Email</Label>
+        <Input
+          id="v-email"
+          type="email"
+          className="mt-1.5"
+          autoComplete="email"
+          {...register("email")}
+        />
+        {errors.email ? (
+          <p className="mt-1.5 text-xs text-destructive">{errors.email.message}</p>
+        ) : null}
+      </div>
+
+      <div>
+        <Label htmlFor="v-phone">Phone no.</Label>
+        <Input id="v-phone" className="mt-1.5" autoComplete="tel" {...register("phone")} />
+        {errors.phone ? (
+          <p className="mt-1.5 text-xs text-destructive">{errors.phone.message}</p>
+        ) : null}
+      </div>
+
+      <div>
         <Label htmlFor="v-dob">Date of birth</Label>
         <Input
           id="v-dob"
@@ -94,7 +124,7 @@ export function VolunteerForm() {
       </div>
 
       <div>
-        <Label htmlFor="v-occupation">Occupation (optional)</Label>
+        <Label htmlFor="v-occupation">Occupation</Label>
         <Input id="v-occupation" className="mt-1.5" {...register("occupation")} />
       </div>
 

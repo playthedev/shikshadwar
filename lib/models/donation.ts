@@ -29,6 +29,9 @@ const donationSchema = new Schema(
       email: { type: String, required: true, trim: true, lowercase: true },
       phone: { type: String, trim: true },
       pan: { type: String, trim: true, uppercase: true },
+      dateOfBirth: { type: String, trim: true },
+      address: { type: String, trim: true },
+      pincode: { type: String, trim: true },
     },
 
     purpose: { type: String, trim: true, default: "general" },

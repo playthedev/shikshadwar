@@ -4,29 +4,31 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { RevealText } from "@/components/shared/reveal-text";
-import { Magnetic } from "@/components/shared/magnetic";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { heroSlides } from "@/lib/hero-slides";
-import { cn } from "@/lib/utils";
 
-const AUTOPLAY_MS = 3000;
+// 3s was not long enough to finish reading a headline and its subheading
+// before the frame changed. At 5.5s the progress rail below also has room to
+// read as a deliberate timer rather than a flicker.
+const AUTOPLAY_MS = 5500;
 const FALLBACK_IMAGE = "/images/home/mission.jpg";
 
 /**
  * Hero slider carrying forward all six slides from the legacy homepage
  * carousel (per client request), rebuilt to stay WCAG 2.2.2-compliant:
- * a visible pause control, autoplay disabled under prefers-reduced-motion,
- * and full keyboard access via the prev/next/dot controls. Each slide gets a
- * slow Ken Burns zoom, and the whole image drifts on scroll for depth.
+ * autoplay disabled under prefers-reduced-motion, and full keyboard access
+ * via the tab rail.
+ *
+ * Depth comes from four layers moving at different rates: Ken Burns on the
+ * photo, parallax on the whole plate, copy rising on slide change, and the
+ * scroll cue running on its own loop.
  */
 export function Hero() {
   const reducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
   const [failedSlides, setFailedSlides] = useState<Record<number, boolean>>({});
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,32 +37,36 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 90]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : 120]);
+  // Copy leaves faster than the plate behind it, so the layers separate as
+  // the reader scrolls away instead of sliding off as one flat sheet.
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, reducedMotion ? 0 : -60]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.7], [1, reducedMotion ? 1 : 0]);
 
   const goTo = useCallback((next: number) => {
     setIndex(((next % heroSlides.length) + heroSlides.length) % heroSlides.length);
   }, []);
 
   useEffect(() => {
-    if (!playing || reducedMotion) return;
+    if (reducedMotion) return;
     timerRef.current = setInterval(() => {
       setIndex((current) => (current + 1) % heroSlides.length);
     }, AUTOPLAY_MS);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [playing, reducedMotion]);
+  }, [reducedMotion]);
 
   const slide = heroSlides[index];
 
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden"
+      className="relative isolate overflow-hidden"
       aria-roledescription="carousel"
       aria-label="Shikshadwar Foundation highlights"
     >
-      <motion.div className="absolute inset-0" style={{ y: parallaxY }}>
+      <motion.div className="absolute inset-0 -z-10" style={{ y: parallaxY }}>
         <AnimatePresence initial={false} mode="sync">
           <motion.div
             key={slide.image}
@@ -68,13 +74,13 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reducedMotion ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: reducedMotion ? 0 : 1.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div
-              className="absolute inset-[-4%]"
-              initial={{ scale: 1 }}
-              animate={{ scale: reducedMotion ? 1 : 1.08 }}
-              transition={{ duration: (AUTOPLAY_MS + 1200) / 1000, ease: "linear" }}
+              className="absolute inset-[-6%]"
+              initial={{ scale: 1, x: 0 }}
+              animate={{ scale: reducedMotion ? 1 : 1.1, x: reducedMotion ? 0 : "1.5%" }}
+              transition={{ duration: (AUTOPLAY_MS + 1800) / 1000, ease: "linear" }}
             >
               <Image
                 src={failedSlides[index] ? FALLBACK_IMAGE : slide.image}
@@ -90,91 +96,75 @@ export function Hero() {
             </motion.div>
           </motion.div>
         </AnimatePresence>
+
+        {/*
+          Three scrims rather than one. A single top-to-bottom gradient either
+          crushes the photo or leaves the headline sitting on unpredictable
+          detail; separating the vertical lift, the left-hand text bed and a
+          corner vignette keeps contrast where the type actually is while the
+          rest of the frame stays open.
+        */}
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/10" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/20 to-transparent" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent"
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 50% 0%, transparent 40%, color-mix(in oklch, var(--ink), transparent 45%) 100%)",
+          }}
         />
       </motion.div>
 
-      <Container className="relative flex min-h-[min(88vh,720px)] flex-col justify-end pt-32 pb-14 md:pb-20">
-        <p className="mb-4 text-sm font-semibold tracking-wide text-paper/80 uppercase">
-          Public Charitable Trust · Delhi · Bihar · Uttar Pradesh · Rajasthan · Haryana
-        </p>
+      <div aria-hidden="true" className="grain-overlay absolute inset-0 -z-10" />
 
-        <div aria-live="polite" className="min-h-[9rem] md:min-h-[8rem]">
-          <h1 className="max-w-2xl text-[clamp(2.25rem,5vw,4rem)] leading-[1.05] text-paper">
-            <RevealText key={slide.headline} text={slide.headline} mode="mount" />
-          </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-paper/85">
-            {slide.subheading}
-          </p>
-        </div>
+      <Container className="relative flex min-h-[min(94vh,880px)] flex-col justify-end pt-36 pb-10 md:pb-14">
+        <motion.div style={{ y: copyY, opacity: copyOpacity }}>
+          <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
+            <Link
+              href={slide.href}
+              aria-live="polite"
+              aria-label={`${slide.headline} — open the programme`}
+              className="group/banner block lg:col-span-8"
+            >
+              <h1 className="max-w-4xl text-display text-paper transition-colors duration-300 group-hover/banner:text-paper/85">
+                <RevealText key={slide.headline} text={slide.headline} mode="mount" />
+              </h1>
+            </Link>
+          </div>
+        </motion.div>
 
-        <div className="mt-8 flex flex-wrap items-center gap-6">
-          {/* Primary donate CTA — intentionally has no hover/entrance motion. */}
-          <Button
-            render={<Link href="/donate/" />}
-            nativeButton={false}
-            className="h-13 rounded-(--radius) bg-rust px-8 text-base font-semibold text-primary-foreground hover:bg-[var(--rust-strong)] active:translate-y-0"
+        <div className="mt-12 flex items-end justify-between gap-6">
+          <div
+            role="tablist"
+            aria-label="Slides"
+            className="flex flex-1 items-center gap-2 sm:gap-4"
           >
-            {slide.ctaLabel}
-          </Button>
-
-          <div className="flex items-center gap-3">
-            <Magnetic>
-              <button
-                type="button"
-                onClick={() => goTo(index - 1)}
-                aria-label="Previous slide"
-                className="flex size-10 items-center justify-center rounded-full border border-paper/30 text-paper transition-colors hover:bg-paper/10"
-              >
-                <ChevronLeft aria-hidden="true" className="size-5" />
-              </button>
-            </Magnetic>
-
-            <div className="flex items-center gap-2" role="tablist" aria-label="Slides">
-              {heroSlides.map((s, i) => (
+            {heroSlides.map((s, i) => {
+              const active = i === index;
+              return (
                 <button
                   key={s.image}
                   type="button"
                   role="tab"
-                  aria-selected={i === index}
-                  aria-label={`Show slide ${i + 1} of ${heroSlides.length}`}
+                  aria-selected={active}
+                  aria-label={`Show slide ${i + 1} of ${heroSlides.length}: ${s.headline}`}
+                  tabIndex={active ? 0 : -1}
                   onClick={() => goTo(i)}
-                  className={cn(
-                    "h-1.5 rounded-full transition-all",
-                    i === index ? "w-6 bg-paper" : "w-1.5 bg-paper/40 hover:bg-paper/60",
-                  )}
+                  className="group flex-1 pt-1 text-left"
                 />
-              ))}
-            </div>
+              );
+            })}
+          </div>
 
-            <Magnetic>
-              <button
-                type="button"
-                onClick={() => goTo(index + 1)}
-                aria-label="Next slide"
-                className="flex size-10 items-center justify-center rounded-full border border-paper/30 text-paper transition-colors hover:bg-paper/10"
-              >
-                <ChevronRight aria-hidden="true" className="size-5" />
-              </button>
-            </Magnetic>
-
-            <Magnetic>
-              <button
-                type="button"
-                onClick={() => setPlaying((p) => !p)}
-                aria-label={playing ? "Pause slideshow" : "Play slideshow"}
-                aria-pressed={!playing}
-                className="flex size-10 items-center justify-center rounded-full border border-paper/30 text-paper transition-colors hover:bg-paper/10"
-              >
-                {playing ? (
-                  <Pause aria-hidden="true" className="size-4" />
-                ) : (
-                  <Play aria-hidden="true" className="size-4" />
-                )}
-              </button>
-            </Magnetic>
+          <div className="flex shrink-0 items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="hidden items-center gap-2 text-eyebrow text-paper/50 uppercase md:flex"
+            >
+              Scroll
+              <ArrowDown className="size-3.5 animate-bounce motion-reduce:animate-none" />
+            </span>
           </div>
         </div>
       </Container>

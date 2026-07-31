@@ -1,11 +1,6 @@
-"use client";
-
-import { motion } from "motion/react";
-import { Quote } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { SectionHeading } from "@/components/shared/section-heading";
-import { Reveal } from "@/components/shared/reveal";
-import { SpotlightCard } from "@/components/shared/spotlight-card";
+import { TestimonialSlider } from "@/components/shared/testimonial-slider";
+import { RevealText } from "@/components/shared/reveal-text";
 
 const testimonials = [
   {
@@ -26,45 +21,57 @@ const testimonials = [
     name: "Geeta Yadav",
     role: "Volunteer & Community Mobiliser, Kadipur",
   },
+  // Placeholder — replace with a real quote before this ships.
+  {
+    quote:
+      "Placeholder quote. Replace with a real testimonial before launch — the counselling and mentorship gave me a sense of direction I didn't have before.",
+    name: "Placeholder Name",
+    role: "Student",
+  },
+  // Placeholder — replace with a real quote before this ships.
+  {
+    quote:
+      "Placeholder quote. Replace with a real testimonial before launch — the vocational training helped me find steady work within a few months of finishing the course.",
+    name: "Placeholder Name",
+    role: "Programme Graduate",
+  },
+  // Placeholder — replace with a real quote before this ships.
+  {
+    quote:
+      "Placeholder quote. Replace with a real testimonial before launch — working alongside the team here changed how I think about community outreach.",
+    name: "Placeholder Name",
+    role: "Volunteer",
+  },
 ];
 
+/**
+ * Set on ink, as the one dark passage in the middle of the page. The
+ * surrounding sections all sit on paper or a tint of it, so this is what
+ * gives the scroll a change of pressure — and it puts the beneficiaries'
+ * own words, rather than the organisation's, on the page's strongest field.
+ */
 export function Testimonials() {
   return (
-    <section className="py-[clamp(4rem,8vw,8rem)]">
-      <Container>
-        <SectionHeading
-          eyebrow="In Their Words"
-          title="What they say about us"
-          align="center"
-          className="mx-auto"
-          animateTitle
-        />
+    <section className="grain-overlay relative overflow-hidden bg-ink py-[clamp(5rem,10vw,10rem)]">
+      <div
+        aria-hidden="true"
+        className="animate-breathe absolute -top-40 -left-32 size-[34rem] rounded-full bg-pine opacity-40 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="animate-float-slow absolute -right-24 -bottom-40 size-[26rem] rounded-full bg-rust opacity-20 blur-3xl"
+      />
 
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <Reveal key={testimonial.name} delay={index * 0.06}>
-              <motion.div
-                initial={false}
-                whileHover={{ y: -6, rotate: -0.5 }}
-                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full"
-              >
-                <SpotlightCard className="h-full rounded-(--radius)">
-                  <figure className="flex h-full flex-col rounded-(--radius) border border-border bg-surface p-6 shadow-sm transition-shadow duration-300 hover:shadow-xl">
-                    <Quote aria-hidden="true" className="size-6 text-rust/50" />
-                    <blockquote className="mt-4 flex-1 text-md leading-relaxed text-ink">
-                      {testimonial.quote}
-                    </blockquote>
-                    <figcaption className="mt-5 border-t border-border pt-4">
-                      <p className="font-heading text-base text-ink">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </figcaption>
-                  </figure>
-                </SpotlightCard>
-              </motion.div>
-            </Reveal>
-          ))}
+      <Container className="relative">
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-px w-8 shrink-0 bg-gold" />
+          <p className="text-eyebrow text-gold uppercase">In their words</p>
         </div>
+        <h2 className="mt-5 max-w-2xl text-h1 font-heading text-balance text-paper">
+          <RevealText text="The people we work with, on what changed." />
+        </h2>
+
+        <TestimonialSlider items={testimonials} className="mt-16" />
       </Container>
     </section>
   );

@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { amount, name, email, phone, pan, purpose } = parsed.data;
+  const { amount, name, email, phone, pan, dateOfBirth, address, pincode, purpose } = parsed.data;
   const amountInPaise = amount * 100;
 
   const keyId = process.env.RAZORPAY_KEY_ID;
@@ -53,7 +53,15 @@ export async function POST(request: NextRequest) {
       amount: amountInPaise,
       currency: "INR",
       status: "created",
-      donor: { name, email, phone: phone || undefined, pan: pan || undefined },
+      donor: {
+        name,
+        email,
+        phone: phone || undefined,
+        pan: pan || undefined,
+        dateOfBirth: dateOfBirth || undefined,
+        address,
+        pincode,
+      },
       purpose: purpose || "general",
       ip: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null,
       userAgent: request.headers.get("user-agent") || null,

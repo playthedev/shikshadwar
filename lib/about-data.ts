@@ -7,18 +7,10 @@ export const aboutIntro = {
     "Slums and villages lack access to basic services such as education, healthcare, and other essential facilities. Children often drop out of school to support their parents in earning a livelihood and meeting basic needs. People living in these areas suffer from poor health conditions due to a lack of education, which leads to low awareness about health and hygiene.",
     "To bring about a positive change in the lives of underprivileged and marginalized communities, our founder took the initiative and began working in the slums of Delhi with a group of volunteers to promote awareness about the importance of education, healthcare, and hygiene. We soon realized that health is directly connected to and significantly impacts people's socio-economic conditions, education, and livelihoods.",
     "With this understanding, education programs, non-formal tutoring, and literacy drives were organized in Bhalaswa Slum and Kadipur village. Following the success of these initiatives, Shikshadwar Foundation — a not-for-profit organization — was established in 2025 with a vision to create positive change and bridge critical gaps by providing essential services to underprivileged communities.",
-    "The organization was founded by Mr. Manish Mandal and was formally registered under the Indian Trust Act, 1882, in July 2025 in Delhi. It began with humble efforts such as providing remedial education and livelihood opportunities to marginalized communities in Bhalaswa Slum and Kadipur Village. Since then, it has worked towards uplifting underserved populations and has expanded its operations across key areas, including education, livelihood, skilling, healthcare, youth development, and the environment in the states of Delhi, Bihar, Uttar Pradesh, Rajasthan, and Haryana.",
+    "The organization was founded by Mr. Manish Mandal and was formally registered under the Indian Trust Act, 1882, in July 2025 in Delhi. It began with humble efforts such as providing remedial education and livelihood opportunities to marginalized communities in Bhalaswa Slum and Kadipur Village. Since then, it has worked towards uplifting underserved populations and has expanded its operations across key areas, including education, livelihood, skilling, healthcare, youth empowerment, and the environment in the states of Delhi, Bihar, Uttar Pradesh, Rajasthan, and Haryana.",
     "Shikshadwar Foundation envisions a society of empowered individuals who realize their full potential in a sustainable and equitable manner. The organization strives to empower marginalized communities so they can become economically and socially secure, live with dignity, and contribute meaningfully to society. This change is driven and owned by the communities themselves, grounded in the highest principles of human rights.",
   ],
 };
-
-export const aboutStats = [
-  { value: 467, suffix: "", label: "Education" },
-  { value: 476, suffix: "", label: "Health" },
-  { value: 59, suffix: "", label: "Livelihood" },
-  { value: 100, suffix: "", label: "Youth Development" },
-  { value: 100, suffix: "", label: "Tree Plantation" },
-];
 
 export const missionVision = {
   intro:

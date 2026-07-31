@@ -15,7 +15,7 @@ export const blogCategoryIcons: Record<string, LucideIcon> = {
   Education: BookOpen,
   Livelihood: HandCoins,
   Healthcare: HeartPulse,
-  "Youth Development": Users,
+  "Youth Empowerment": Users,
 };
 
 /**
@@ -56,7 +56,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Young participants share what they took away from a weekend of sessions on communication, civic awareness and peer mentoring.",
     date: "2026-03-02",
-    category: "Youth Development",
+    category: "Youth Empowerment",
     tag: "pine",
   },
 ];

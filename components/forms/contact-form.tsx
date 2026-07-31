@@ -87,7 +87,7 @@ export function ContactForm() {
       </div>
 
       <div>
-        <Label htmlFor="message">Your message (optional)</Label>
+        <Label htmlFor="message">Your message</Label>
         <Textarea id="message" rows={5} className="mt-1.5" {...register("message")} />
       </div>
 
