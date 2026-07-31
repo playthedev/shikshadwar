@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Script from "next/script";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Loader2, ShieldCheck, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,6 @@ import {
   createOrderSchema,
   MAX_DONATION_INR,
   MIN_DONATION_INR,
-  PAN_REQUIRED_ABOVE_INR,
   type CreateOrderInput,
 } from "@/lib/validations/donate-schema";
 
@@ -37,6 +36,8 @@ export function DonateForm({
   presetAmounts = PRESET_AMOUNTS,
   mode = "amount",
   unitPrice,
+  unitLabel = "item",
+  quantityPresets,
   maxQuantity = 10,
   submitLabel = "Donate now",
 }: {
@@ -45,13 +46,17 @@ export function DonateForm({
   defaultAmount?: number;
   presetAmounts?: number[];
   /**
-   * "quantity" swaps the preset-amount picker for a product quantity
-   * stepper — the amount becomes unitPrice × quantity, like an e-commerce
-   * checkout, instead of a freeform donation amount. Used by the Support Us
-   * product pages.
+   * "quantity" swaps the preset-amount picker for a quantity stepper — the
+   * amount becomes unitPrice × quantity, like an e-commerce checkout
+   * (Support Us products) or a "gift N trees" flow (Donate a Tree), instead
+   * of a freeform donation amount.
    */
   mode?: "amount" | "quantity";
   unitPrice?: number;
+  /** Singular noun for the thing being counted, e.g. "Tree" — pluralised automatically for preset tiles. */
+  unitLabel?: string;
+  /** Quick-select quantity tiles, e.g. [10, 25, 50, 100] for "10 Trees", "25 Trees"… */
+  quantityPresets?: number[];
   maxQuantity?: number;
   submitLabel?: string;
 } = {}) {
@@ -59,18 +64,19 @@ export function DonateForm({
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedPreset, setSelectedPreset] = useState<number | null>(defaultAmount);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(quantityPresets?.[0] ?? 1);
+
+  const initialQuantity = quantityPresets?.[0] ?? 1;
 
   const {
     register,
     handleSubmit,
     setValue,
-    control,
     formState: { errors },
   } = useForm<CreateOrderInput>({
     resolver: zodResolver(createOrderSchema),
     defaultValues: {
-      amount: mode === "quantity" ? (unitPrice ?? defaultAmount) : defaultAmount,
+      amount: mode === "quantity" ? (unitPrice ?? defaultAmount) * initialQuantity : defaultAmount,
       name: "",
       email: "",
       phone: "",
@@ -78,12 +84,9 @@ export function DonateForm({
       dateOfBirth: "",
       address: "",
       pincode: "",
-      purpose: mode === "quantity" ? `${defaultPurpose} × 1` : defaultPurpose,
+      purpose: mode === "quantity" ? `${defaultPurpose} × ${initialQuantity}` : defaultPurpose,
     },
   });
-
-  const watchedAmount = useWatch({ control, name: "amount" });
-  const panRequired = Number(watchedAmount) > PAN_REQUIRED_ABOVE_INR;
 
   function pickPreset(value: number) {
     setSelectedPreset(value);
@@ -215,8 +218,29 @@ export function DonateForm({
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
         {mode === "quantity" && unitPrice ? (
           <div>
-            <Label>Quantity</Label>
-            <div className="mt-2 flex items-center gap-4">
+            <Label>{quantityPresets ? `Choose how many ${unitLabel.toLowerCase()}s` : "Quantity"}</Label>
+
+            {quantityPresets ? (
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {quantityPresets.map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => changeQuantity(value)}
+                    className={cn(
+                      "h-11 rounded-(--radius) border text-sm font-medium transition-colors",
+                      quantity === value
+                        ? "border-rust bg-rust text-primary-foreground"
+                        : "border-border bg-background text-ink hover:border-rust/50",
+                    )}
+                  >
+                    {`${value} ${unitLabel}${value === 1 ? "" : "s"}`}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            <div className={cn("flex items-center gap-4", quantityPresets && "mt-3")}>
               <div className="flex items-center rounded-(--radius) border border-border">
                 <button
                   type="button"
@@ -327,13 +351,11 @@ export function DonateForm({
             />
             {errors.pan ? (
               <p className="mt-1.5 text-xs text-destructive">{errors.pan.message}</p>
-            ) : (
-              <p className="mt-1.5 text-xs text-muted-foreground">
-                {panRequired
-                  ? `Required for donations above ₹${PAN_REQUIRED_ABOVE_INR.toLocaleString("en-IN")}, to issue your 80G receipt.`
-                  : "Share your PAN to receive an 80G tax-exemption receipt."}
-              </p>
-            )}
+            ) : null}
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              Please note that if you do not provide your PAN Number, you will not be able to
+              claim 50% tax exemption u/s 80G in India.
+            </p>
           </div>
           <div>
             <Label htmlFor="dob">Date of birth</Label>

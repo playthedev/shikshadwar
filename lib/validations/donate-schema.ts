@@ -27,8 +27,13 @@ const orderFields = z.object({
     .optional()
     .or(z.literal("")),
   dateOfBirth: z.string().trim().optional().or(z.literal("")),
-  address: z.string().trim().min(5, "Please enter your address.").max(300),
-  pincode: z.string().trim().regex(/^[0-9]{6}$/, "Please enter a valid 6-digit pincode."),
+  address: z.string().trim().max(300).optional().or(z.literal("")),
+  pincode: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{6}$/, "Please enter a valid 6-digit pincode.")
+    .optional()
+    .or(z.literal("")),
   purpose: z.string().trim().max(120).optional(),
 });
 

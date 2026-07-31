@@ -14,7 +14,12 @@ export const metadata: Metadata = {
   },
 };
 
-const treeDonationAmounts = [251, 500, 1001, 2100];
+// Illustrative — as on givemetrees.org/gift-a-tree, donors pick a number of
+// trees rather than a rupee amount. Confirm the real per-tree cost with the
+// client before this goes live; this is a placeholder like the tiered
+// amounts it replaces.
+const TREE_PRICE_INR = 300;
+const TREE_QUANTITY_PRESETS = [1, 10, 25, 50, 100];
 
 export default function DonateATreePage() {
   return (
@@ -63,11 +68,18 @@ export default function DonateATreePage() {
                   <span aria-hidden="true" className="h-px w-8 shrink-0 bg-rust" />
                   <p className="text-eyebrow text-rust uppercase">Donate a tree</p>
                 </div>
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  {`Each tree costs ₹${TREE_PRICE_INR.toLocaleString("en-IN")} to plant and maintain. Choose how many you'd like to gift.`}
+                </p>
                 <div className="mt-8">
                   <DonateForm
                     defaultPurpose="Donate a Tree"
-                    defaultAmount={treeDonationAmounts[1]}
-                    presetAmounts={treeDonationAmounts}
+                    mode="quantity"
+                    unitPrice={TREE_PRICE_INR}
+                    unitLabel="Tree"
+                    quantityPresets={TREE_QUANTITY_PRESETS}
+                    maxQuantity={500}
+                    submitLabel="Gift these trees"
                   />
                 </div>
               </div>
