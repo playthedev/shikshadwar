@@ -1,38 +1,38 @@
+import { Check } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { SectionHeading } from "@/components/shared/section-heading";
-import { Reveal } from "@/components/shared/reveal";
+import type { Programme } from "@/lib/programmes";
 
 /**
- * Focus areas as a numbered index rather than a grid of cards.
- *
- * These entries are short — often two or three words — so a bordered card
- * around each one wrapped a large box around almost nothing. Hanging them
- * off oversized numerals with a hairline rule gives the list its structure
- * from typography instead, and reads as a contents page for the programme.
+ * Focus areas as a plain icon-list — matching Smile Foundation's flat
+ * "WHY / WHAT WE DO" bullet treatment rather than the numbered-index card
+ * layout the rest of the site uses elsewhere. Each area gets its own themed
+ * icon badge instead of a bare dot, so the list reads as illustrated.
  */
-export function FocusAreas({ areas }: { areas: string[] }) {
+export function FocusAreas({ areas }: { areas: NonNullable<Programme["focusAreas"]> }) {
   return (
-    <section className="border-t border-border bg-muted/40 py-[clamp(4rem,8vw,8rem)]">
+    <section className="bg-white py-14 md:py-20">
       <Container>
-        <SectionHeading
-          eyebrow="Focus areas"
-          title="Where this work happens"
-          animateTitle
-          accent="pine"
-        />
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="font-[family-name:var(--font-display)] text-4xl leading-[1.1] tracking-wide text-black uppercase md:text-5xl">
+            Our Focus Areas
+          </h2>
 
-        <ul className="mt-14 grid gap-x-10 sm:grid-cols-2">
-          {areas.map((area, index) => (
-            <Reveal as="li" key={area} delay={(index % 2) * 0.06}>
-              <div className="group flex items-baseline gap-6 border-t border-ink/10 py-7">
-                <span className="font-heading text-h3 tabular-nums text-ink/20 transition-colors duration-500 group-hover:text-pine">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <p className="font-heading text-h4 text-balance text-ink">{area}</p>
-              </div>
-            </Reveal>
-          ))}
-        </ul>
+          <div className="mt-8 flex justify-center">
+            <ul className="grid gap-x-10 gap-y-5 text-left sm:grid-cols-2">
+              {areas.map((area) => {
+                const Icon = area.icon ?? Check;
+                return (
+                  <li key={area.text} className="flex items-center gap-3 text-base leading-relaxed text-black">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-rust-tint">
+                      <Icon aria-hidden="true" className="size-5 text-rust" />
+                    </span>
+                    {area.text}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
       </Container>
     </section>
   );

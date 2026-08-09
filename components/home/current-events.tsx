@@ -11,22 +11,56 @@ import { RevealText } from "@/components/shared/reveal-text";
 import { TiltCard } from "@/components/shared/tilt-card";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
+import { sponsoredChildren } from "@/lib/sponsorship";
+import { products } from "@/lib/products";
 
-interface EventImage {
+interface EventSlide {
   src: string;
   alt: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
 }
 
-const currentEventImages: EventImage[] = [
-  { src: "/images/gallery/education/edu-05.png", alt: "A non-formal education session at a Shikshadwar centre" },
-  { src: "/images/gallery/healthcare/health-kdliver2.jpeg", alt: "A Liver Care Foundation health-awareness session for children and volunteers" },
-  { src: "/images/gallery/livelihood/live-03.jpeg", alt: "A community member practising embroidery skills in a livelihood training session" },
+const currentEventContent = {
+  eyebrow: "Current events",
+  title: "What's happening this week",
+  description:
+    "Non-formal classes, health camps and skill-training sessions run every week across our centres — see it as it happens.",
+  ctaLabel: "Join Now",
+  ctaHref: "/join-us/",
+};
+
+const currentEventSlides: EventSlide[] = [
+  { src: "/images/gallery/education/edu-05.png", alt: "A non-formal education session at a Shikshadwar centre", ...currentEventContent },
+  { src: "/images/gallery/healthcare/health-kdliver2.jpeg", alt: "A Liver Care Foundation health-awareness session for children and volunteers", ...currentEventContent },
+  { src: "/images/gallery/livelihood/live-03.jpeg", alt: "A community member practising embroidery skills in a livelihood training session", ...currentEventContent },
 ];
 
-const sponsorChildImages: EventImage[] = [
-  { src: "/images/gallery/education/edu-08.png", alt: "A sponsored child taking part in a Shikshadwar education programme activity" },
-  { src: "/images/gallery/education/edu-09.png", alt: "A sponsored child taking part in a Shikshadwar education programme activity" },
-  { src: "/images/gallery/education/edu-12.png", alt: "A sponsored child taking part in a Shikshadwar education programme activity" },
+// Each slide here pulls its own image, blurb and CTA straight from the
+// child/product it represents — a Meet Our Stars slide links to that child's
+// own page, a Support Us slide links to that product's own checkout page.
+const sponsorAndSupportSlides: EventSlide[] = [
+  ...sponsoredChildren.slice(0, 3).map((child) => ({
+    src: child.image.src,
+    alt: child.image.alt,
+    eyebrow: "Meet Our Stars",
+    title: `Sponsor ${child.name}'s year`,
+    description: `${child.name}, ${child.age}, ${child.location.split(",")[0]} — dreams of ${child.dream.replace(/^To /i, "").toLowerCase()}. Your sponsorship covers tuition, uniforms and mentoring.`,
+    ctaLabel: `Sponsor ${child.name}`,
+    ctaHref: `/meet-our-stars/${child.slug}/`,
+  })),
+  ...products.slice(0, 2).map((product, i) => ({
+    src: i === 0 ? "/images/gallery/livelihood/live-03.jpeg" : "/images/gallery/livelihood/live-05.jpeg",
+    alt: `${product.name}, handmade by women trained through the Livelihood programme`,
+    eyebrow: "Support Us",
+    title: product.name,
+    description: `${product.description} ₹${product.price.toLocaleString("en-IN")} — buying one puts income directly in her hands.`,
+    ctaLabel: "Buy Now",
+    ctaHref: `/support-us/${product.slug}/`,
+  })),
 ];
 
 const AUTOPLAY_MS = 4000;
@@ -54,24 +88,14 @@ const accentButton: Record<Accent, string> = {
 };
 
 function EventCard({
-  eyebrow,
-  title,
-  description,
-  images,
+  slides,
   icon: Icon,
   accent,
-  ctaLabel,
-  ctaHref,
   delay = 0,
 }: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  images: EventImage[];
+  slides: EventSlide[];
   icon: typeof CalendarDays;
   accent: Accent;
-  ctaLabel: string;
-  ctaHref: string;
   delay?: number;
 }) {
   const [index, setIndex] = useState(0);
@@ -81,27 +105,27 @@ function EventCard({
   useEffect(() => {
     if (reducedMotion) return;
     timerRef.current = setInterval(() => {
-      setIndex((current) => (current + 1) % images.length);
+      setIndex((current) => (current + 1) % slides.length);
     }, AUTOPLAY_MS);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [reducedMotion, images.length]);
+  }, [reducedMotion, slides.length]);
 
   function goTo(next: number) {
-    setIndex(((next % images.length) + images.length) % images.length);
+    setIndex(((next % slides.length) + slides.length) % slides.length);
   }
 
-  const image = images[index];
+  const slide = slides[index];
 
   return (
     <Reveal delay={delay} className="h-full">
       <TiltCard max={3} className="h-full rounded-(--radius)">
-        <div className="group/card grain-overlay relative flex h-full flex-col overflow-hidden rounded-(--radius) bg-ink shadow-lg transition-shadow duration-500 hover:shadow-2xl">
+        <div className="group/card grain-overlay relative flex h-full flex-col overflow-hidden rounded-(--radius) border border-border bg-paper shadow-lg transition-shadow duration-500 hover:shadow-2xl">
           <div className="relative aspect-[4/3] overflow-hidden">
             <AnimatePresence initial={false} mode="sync">
               <motion.div
-                key={image.src}
+                key={slide.src}
                 className="absolute inset-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -109,8 +133,8 @@ function EventCard({
                 transition={{ duration: reducedMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
                 <Image
-                  src={image.src}
-                  alt={image.alt}
+                  src={slide.src}
+                  alt={slide.alt}
                   fill
                   sizes="(min-width: 768px) 45vw, 90vw"
                   quality={92}
@@ -119,15 +143,10 @@ function EventCard({
               </motion.div>
             </AnimatePresence>
 
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-ink/10"
-            />
-
             <button
               type="button"
               onClick={() => goTo(index - 1)}
-              aria-label={`Previous photo — ${title}`}
+              aria-label="Previous"
               className="absolute top-1/2 left-3 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-paper/25 bg-ink/40 text-paper opacity-0 backdrop-blur-sm transition-all duration-300 hover:border-paper/60 hover:bg-ink/70 group-hover/card:opacity-100 group-focus-within/card:opacity-100"
             >
               <ChevronLeft aria-hidden="true" className="size-4" />
@@ -135,7 +154,7 @@ function EventCard({
             <button
               type="button"
               onClick={() => goTo(index + 1)}
-              aria-label={`Next photo — ${title}`}
+              aria-label="Next"
               className="absolute top-1/2 right-3 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-paper/25 bg-ink/40 text-paper opacity-0 backdrop-blur-sm transition-all duration-300 hover:border-paper/60 hover:bg-ink/70 group-hover/card:opacity-100 group-focus-within/card:opacity-100"
             >
               <ChevronRight aria-hidden="true" className="size-4" />
@@ -144,15 +163,15 @@ function EventCard({
             <div
               className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1.5"
               role="tablist"
-              aria-label={`${title} photos`}
+              aria-label="Slides"
             >
-              {images.map((item, i) => (
+              {slides.map((item, i) => (
                 <button
-                  key={item.src}
+                  key={item.src + i}
                   type="button"
                   role="tab"
                   aria-selected={i === index}
-                  aria-label={`Show photo ${i + 1}`}
+                  aria-label={`Show slide ${i + 1}`}
                   onClick={() => goTo(i)}
                   className={cn(
                     "h-1.5 rounded-full transition-all duration-300",
@@ -174,21 +193,23 @@ function EventCard({
 
             <div className="relative flex items-center gap-3">
               <span aria-hidden="true" className={cn("h-px w-8 shrink-0", accentLine[accent])} />
-              <p className={cn("text-eyebrow uppercase", accentText[accent])}>{eyebrow}</p>
+              <p className={cn("text-eyebrow uppercase", accentText[accent])}>{slide.eyebrow}</p>
             </div>
-            <h3 className="relative mt-4 font-heading text-h3 text-paper">{title}</h3>
-            <p className="relative mt-3 max-w-sm text-sm leading-relaxed text-paper/65">
-              {description}
+            <h3 className="relative mt-4 line-clamp-2 min-h-[2lh] font-heading text-h3 text-ink">
+              {slide.title}
+            </h3>
+            <p className="relative mt-3 line-clamp-3 min-h-[4.5rem] max-w-sm text-sm leading-relaxed text-ink/65">
+              {slide.description}
             </p>
 
             <Link
-              href={ctaHref}
+              href={slide.ctaHref}
               className={cn(
                 "group/cta relative mt-7 inline-flex w-fit items-center gap-2 rounded-(--radius) px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors",
                 accentButton[accent],
               )}
             >
-              {ctaLabel}
+              {slide.ctaLabel}
               <ArrowUpRight
                 aria-hidden="true"
                 className="size-4 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
@@ -221,28 +242,9 @@ export function CurrentEvents() {
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          <EventCard
-            eyebrow="Current events"
-            title="What's happening this week"
-            description="Non-formal classes, health camps and skill-training sessions run every week across our centres — see it as it happens."
-            images={currentEventImages}
-            icon={CalendarDays}
-            accent="pine"
-            ctaLabel="Join Now"
-            ctaHref="/join-us/"
-          />
-          <EventCard
-            eyebrow="Sponsor a child"
-            title="Fund a child's year"
-            description="Tuition, uniforms, books and mentoring, start to finish — funded by someone who decided one child's education couldn't wait."
-            images={sponsorChildImages}
-            icon={HeartHandshake}
-            accent="rust"
-            ctaLabel="Donate Now"
-            ctaHref="/sponsor-a-child/"
-            delay={0.1}
-          />
+        <div className="mt-14 grid gap-6 md:grid-cols-2 md:items-stretch">
+          <EventCard slides={currentEventSlides} icon={CalendarDays} accent="pine" />
+          <EventCard slides={sponsorAndSupportSlides} icon={HeartHandshake} accent="rust" delay={0.1} />
         </div>
       </Container>
     </section>

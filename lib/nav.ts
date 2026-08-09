@@ -46,15 +46,7 @@ export const primaryNav: NavItem[] = [
     href: "/education/",
     children: workLinks,
   },
-  {
-    label: "Sponsor a Child",
-    href: "/sponsor-a-child/",
-    children: [
-      { label: "Sponsor a Child", href: "/sponsor-a-child/" },
-      { label: "Meet Our Stars", href: "/meet-our-stars/" },
-      { label: "Support Us", href: "/support-us/" },
-    ],
-  },
+  { label: "Sponsor a Child", href: "/sponsor-a-child/" },
   { label: "Gallery", href: "/gallery/" },
   {
     label: "Blogs",

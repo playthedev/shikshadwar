@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
-import { DonateForm } from "@/components/forms/donate-form";
+import { ProductDonateForm } from "@/components/support-us/product-donate-form";
 import { FinalCta } from "@/components/home/final-cta";
 import { ProductIllustrationIcon } from "@/components/support-us/product-illustrations";
 import { products, getProduct } from "@/lib/products";
@@ -54,16 +54,14 @@ export default async function ProductCheckoutPage({
       <PageHero
         breadcrumb={product.name}
         trail={[{ label: "Support Us", href: "/support-us/" }]}
-        eyebrow="Handmade, not charity"
         title={product.name}
-        description={product.description}
       />
 
       <section className="py-[clamp(4rem,8vw,8rem)]">
         <Container>
           <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
             <Reveal className="lg:col-span-5">
-              <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-(--radius) border border-border bg-[linear-gradient(135deg,color-mix(in_oklch,var(--pine),white_88%),color-mix(in_oklch,var(--pine),white_78%))] p-12 text-pine">
+              <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-(--radius) border border-border bg-[linear-gradient(135deg,color-mix(in_oklch,var(--rust),white_88%),color-mix(in_oklch,var(--rust),white_78%))] p-12 text-rust">
                 <ProductIllustrationIcon illustration={product.illustration} className="size-full" />
               </div>
 
@@ -89,19 +87,13 @@ export default async function ProductCheckoutPage({
               <div className="rounded-(--radius) border border-border bg-surface p-6 md:p-9">
                 <div className="flex items-center gap-3">
                   <span aria-hidden="true" className="h-px w-8 shrink-0 bg-rust" />
-                  <p className="text-eyebrow text-rust uppercase">Checkout</p>
+                  <p className="text-eyebrow text-rust uppercase">Add to cart</p>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                  {`This item is priced at ₹${product.price.toLocaleString("en-IN")} each. Choose how many you'd like, then check out — we'll be in touch to arrange delivery.`}
+                  {`This item is priced at ₹${product.price.toLocaleString("en-IN")} each. Choose how many you'd like, add it to your cart, and check out when you're ready.`}
                 </p>
                 <div className="mt-8">
-                  <DonateForm
-                    defaultPurpose={`Support Us — ${product.name}`}
-                    mode="quantity"
-                    unitPrice={product.price}
-                    maxQuantity={10}
-                    submitLabel="Proceed to pay"
-                  />
+                  <ProductDonateForm slug={product.slug} name={product.name} unitPrice={product.price} />
                 </div>
               </div>
             </Reveal>

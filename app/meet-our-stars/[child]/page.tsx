@@ -2,18 +2,37 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, GraduationCap, MapPin, Sparkles } from "lucide-react";
+import { ArrowLeft, ZoomIn } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { PageHero } from "@/components/shared/page-hero";
 import { Reveal } from "@/components/shared/reveal";
 import { MaskReveal } from "@/components/shared/mask-reveal";
-import { DonateForm } from "@/components/forms/donate-form";
+import { ChildDonateForm } from "@/components/sponsorship/child-donate-form";
 import { FinalCta } from "@/components/home/final-cta";
 import {
   sponsoredChildren,
   getSponsoredChild,
-  childSponsorshipAmounts,
+  sponsorshipTier,
+  sponsoredChildTagline,
 } from "@/lib/sponsorship";
+
+/**
+ * Every child's story follows the same three-beat shape in the client's
+ * brief (intro → "Despite these challenges..." → "Through your support...").
+ * Splitting on those markers turns the one paragraph back into the
+ * intro/middle copy and the closing line the reference layout shows
+ * separately, below the stat list.
+ */
+function splitStory(story: string) {
+  const [intro, afterIntro] = story.split("Despite these challenges,");
+  const [middle, afterMiddle] = (afterIntro ?? "").split("Through your support,");
+
+  return {
+    intro: intro?.trim() ?? story,
+    middle: afterIntro ? `Despite these challenges,${middle}`.trim() : "",
+    closing: afterMiddle ? `Through your support,${afterMiddle}`.trim() : "",
+  };
+}
 
 export function generateStaticParams() {
   return sponsoredChildren.map((child) => ({ child: child.slug }));
@@ -57,14 +76,22 @@ export default async function SponsoredChildPage({
     notFound();
   }
 
+  const story = splitStory(child.story);
+  const gradeNumber = child.grade.replace(/^Class\s*/i, "");
+  const stats = [
+    { label: "Age", value: `${child.age} years` },
+    { label: "Date of Birth", value: child.dob },
+    { label: "Community", value: child.location },
+    { label: "Studying in Class", value: gradeNumber },
+    { label: "Dream", value: child.dream },
+  ];
+
   return (
     <>
       <PageHero
         breadcrumb={child.name}
         trail={[{ label: "Meet Our Stars", href: "/meet-our-stars/" }]}
-        eyebrow="Waiting for a sponsor"
         title={`Meet ${child.name}.`}
-        description={child.dream}
       />
 
       <section className="py-[clamp(4rem,8vw,8rem)]">
@@ -81,40 +108,21 @@ export default async function SponsoredChildPage({
                     quality={92}
                     className="object-cover"
                   />
+                  <a
+                    href={child.image.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`View full image of ${child.name}`}
+                    className="absolute top-4 right-4 flex size-9 items-center justify-center rounded-full bg-surface/90 text-ink shadow-md transition-colors hover:text-rust"
+                  >
+                    <ZoomIn aria-hidden="true" className="size-4" />
+                  </a>
                 </div>
               </MaskReveal>
 
-              <dl className="mt-8 grid grid-cols-1 gap-4 border-t border-border pt-6 sm:grid-cols-3">
-                <div className="flex items-center gap-2.5">
-                  <Sparkles aria-hidden="true" className="size-4 shrink-0 text-rust" />
-                  <div>
-                    <dt className="text-xs text-muted-foreground">Age</dt>
-                    <dd className="font-heading text-ink">{child.age}</dd>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <GraduationCap aria-hidden="true" className="size-4 shrink-0 text-rust" />
-                  <div>
-                    <dt className="text-xs text-muted-foreground">Grade</dt>
-                    <dd className="font-heading text-ink">{child.grade}</dd>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <MapPin aria-hidden="true" className="size-4 shrink-0 text-rust" />
-                  <div>
-                    <dt className="text-xs text-muted-foreground">Location</dt>
-                    <dd className="font-heading text-ink">{child.location}</dd>
-                  </div>
-                </div>
-              </dl>
-
-              <Reveal delay={0.1}>
-                <p className="mt-8 text-base leading-relaxed text-ink/85">{child.story}</p>
-              </Reveal>
-
               <Link
                 href="/meet-our-stars/"
-                className="group mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-ink/70 transition-colors hover:text-rust"
+                className="group mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-ink/70 transition-colors hover:text-rust"
               >
                 <ArrowLeft
                   aria-hidden="true"
@@ -125,22 +133,33 @@ export default async function SponsoredChildPage({
             </Reveal>
 
             <Reveal delay={0.1} className="lg:col-span-6 lg:col-start-7">
-              <div className="rounded-(--radius) border border-border bg-surface p-6 md:p-9">
-                <div className="flex items-center gap-3">
-                  <span aria-hidden="true" className="h-px w-8 shrink-0 bg-rust" />
-                  <p className="text-eyebrow text-rust uppercase">Sponsor {child.name}</p>
-                </div>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                  {`Choose a one-time amount below to sponsor ${child.name} today. For an ongoing monthly or annual sponsorship, get in touch with us directly and we'll set it up with you.`}
-                </p>
-                <div className="mt-8">
-                  <DonateForm
-                    defaultPurpose={`Sponsor ${child.name}`}
-                    defaultAmount={childSponsorshipAmounts[1]}
-                    presetAmounts={childSponsorshipAmounts}
-                  />
-                </div>
+              <p className="font-heading text-h4 text-balance text-ink">{sponsoredChildTagline}</p>
+
+              <ul className="mt-4 space-y-2">
+                {stats.map((stat) => (
+                  <li key={stat.label} className="text-base leading-relaxed text-ink/85">
+                    <span className="font-semibold text-ink">{stat.label}:</span> {stat.value}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6">
+                <ChildDonateForm
+                  slug={child.slug}
+                  name={child.name}
+                  image={child.image.src}
+                  monthlyAmount={sponsorshipTier.monthly}
+                  yearlyAmount={sponsorshipTier.annual}
+                />
               </div>
+
+              <p className="mt-8 leading-relaxed text-ink/85">{story.intro}</p>
+              {story.middle ? (
+                <p className="mt-3 leading-relaxed text-ink/85">{story.middle}</p>
+              ) : null}
+              {story.closing ? (
+                <p className="mt-3 leading-relaxed text-ink/85">{story.closing}</p>
+              ) : null}
             </Reveal>
           </div>
         </Container>

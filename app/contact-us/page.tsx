@@ -39,12 +39,7 @@ const contactInfo = [
 export default function ContactUsPage() {
   return (
     <>
-      <PageHero
-        breadcrumb="Contact Us"
-        eyebrow="Contact"
-        title="Get in touch."
-        description="Give a helping hand to support the underprivileged."
-      />
+      <PageHero breadcrumb="Contact Us" title="Get in touch." />
 
       <section className="py-[clamp(4rem,8vw,8rem)]">
         <Container>

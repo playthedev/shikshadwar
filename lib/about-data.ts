@@ -24,41 +24,126 @@ export const missionVision = {
 export const certificates = [
   {
     title: "Vocational Skill Training",
+    description:
+      "Certifying our vocational skill-building sessions, which equip community members with practical, income-ready trades.",
     image: "/images/about/cert-vocational-skill-training.png",
   },
   {
     title: "Recognition in GBSSS School",
+    description:
+      "Formal recognition from the Government Boys Senior Secondary School for our on-ground education and mentoring work.",
     // Tall event photo rather than a document scan — bias the crop toward
     // the top so faces aren't cut off when it's cropped to a landscape card.
     image: "/images/about/cert-recognition-gbsss.png",
     objectPosition: "center 20%",
   },
+  {
+    title: "Teaching Vocational Skills — Bhalswa Village",
+    description:
+      "Ministry of Education (Vidyanjali) certificate for teaching vocational skills at Govt. Boys Sr. Sec. School, Bhalswa Village, Delhi.",
+    image: "/images/about/cert-teaching-vocational-skills.png",
+  },
+  {
+    title: "Teaching Vocational Skills — Shalimar Bagh",
+    description:
+      "Ministry of Education (Vidyanjali) certificate for teaching vocational skills at MCD Primary School, AB-Block, Shalimar Bagh, Delhi.",
+    image: "/images/about/cert-teaching-vocational-skills-2.png",
+  },
+  {
+    title: "Gardening Equipment — 12 Items",
+    description:
+      "Ministry of Education (Vidyanjali) certificate for contributing 12 gardening equipment items to MCD Primary School, Shalimar Bagh, Delhi.",
+    image: "/images/about/cert-gardening-equipment.png",
+  },
+  {
+    title: "Gardening Equipment — 2 Items",
+    description:
+      "Ministry of Education (Vidyanjali) certificate for contributing gardening equipment to MCD Primary School, Shalimar Bagh, Delhi.",
+    image: "/images/about/cert-gardening-equipment-2.png",
+  },
 ];
 
 export const trustees = [
   {
+    slug: "manish-mandal",
     name: "Manish Mandal",
     role: "Founder Trustee",
     image: "/images/about/trustee-manish-mandal.png",
+    bio: [
+      "Manish's work began in 2012 with a chance encounter outside Jahangirpuri Metro Station in Delhi, and took him through a decade at Shakti Vahini, Salaam Baalak Trust, TB Alert India and Prayatna — building expertise in child protection, financial management, donor compliance and institutional development.",
+      "In 2025, together with Silky Aggarwal and Suraj Kumar Mandal, he founded Shikshadwar Foundation to build a direct pathway from education to employability to self-reliance.",
+    ],
   },
   {
+    slug: "suraj-kumar-mandal",
     name: "Suraj Kumar Mandal",
-    role: "Co-founder & Programme Implementation",
+    role: "Co-Founder & Trustee",
     image: "/images/about/trustee-suraj-kumar-mandal.png",
+    bio: [
+      "Suraj is a dedicated social development professional with over five years of experience designing and implementing community-based development programmes across education, youth development, public health, women's empowerment, environmental sustainability, community engagement and corporate social responsibility (CSR).",
+      "He has worked with leading development organisations including Read India, Center for Catalyzing Change (C3), TB Alert India, Sponsor A Child Foundation, Children International and Blue Planet Environmental Solutions — leading community mobilisation, volunteer engagement, stakeholder coordination and partnerships with government departments, educational institutions, healthcare providers and corporate CSR partners.",
+      "As Co-Founder, he provides strategic leadership on programme planning, institutional development, partnership building and volunteer management. His work has earned national recognition, including the Best Pragati Mitra – North India (2024) and Best Pragati Mitra – India (2025) awards under the Amazon CSR-supported Read India initiative, alongside certifications from WHO, ICMR, UNICEF, CBSE-DIKSHA and DCPCR. He holds a Master of Social Work (MSW) from IGNOU.",
+    ],
   },
   {
+    slug: "silky-aggarwal",
     name: "Silky Aggarwal",
     role: "Trustee",
     image: "/images/about/trustee-silky-aggarwal.png",
+    bio: [
+      "Silky is a dedicated development sector professional with nearly a decade of experience in the social impact ecosystem, known for combining compassion with professionalism. She has worked with Sarthak Educational Trust, Udayan Care and TeamLease Foundation, strengthening financial management systems, transparency, regulatory compliance, donor reporting and effective use of resources.",
+      "Her expertise in financial planning, budgeting, grant management and organisational accountability helps social programmes run more efficiently and sustainably. As a Trustee of Shikshadwar Foundation, she supports strategic planning, financial governance and programme implementation across education, skill development, women's empowerment, youth leadership and environmental sustainability.",
+    ],
   },
 ];
 
+export function getTrustee(slug: string) {
+  return trustees.find((trustee) => trustee.slug === slug);
+}
+
 export const team = [
-  { name: "Anjali", role: "Volunteer Teacher", image: undefined },
-  { name: "Geeta", role: "Volunteer cum Community Mobilizer", image: undefined },
-  { name: "Neha", role: "Volunteer Teacher", image: "/images/about/team-neha.png" },
-  { name: "Kavita Kashyap", role: "Volunteer Teacher", image: undefined },
-  { name: "Anup Kumar", role: "Volunteer Teacher", image: "/images/about/team-anup-kumar.png" },
-  { name: "Karan Rajput", role: "Volunteer Teacher", image: undefined },
-  { name: "Asha Rai", role: "Volunteer cum Community Mobilizer", image: "/images/about/team-asha.png" },
+  {
+    slug: "geeta",
+    name: "Geeta",
+    role: "Volunteer cum Community Mobilizer",
+    image: undefined,
+    bio: [
+      "Geeta works at the frontline of Shikshadwar's community outreach, going door-to-door to bring families into our education and livelihood programmes. Her familiarity with the neighbourhoods we serve makes her one of the first trusted faces new families meet.",
+      "Beyond mobilisation, she helps coordinate attendance drives and community meetings, making sure the people our programmes are built for have a say in how they run.",
+    ],
+  },
+  {
+    slug: "anup-kumar",
+    name: "Anup Kumar",
+    role: "Volunteer Teacher",
+    image: "/images/about/team-anup-kumar.png",
+    bio: [
+      "Anup teaches at one of Shikshadwar's remedial learning centres, helping children catch up on foundational literacy and numeracy skills they've missed. His classroom is known for patient, one-on-one attention to students who've fallen behind.",
+      "He also mentors newer volunteers joining the teaching programme, passing on classroom techniques that work in under-resourced settings.",
+    ],
+  },
+  {
+    slug: "karan-rajput",
+    name: "Karan Rajput",
+    role: "Volunteer Teacher",
+    image: undefined,
+    bio: [
+      "Karan brings energy and consistency to Shikshadwar's after-school learning sessions, working with children across multiple grade levels in our programme areas.",
+      "He's especially focused on keeping children engaged through hands-on, activity-based learning rather than rote instruction.",
+    ],
+  },
+  {
+    slug: "asha-rai",
+    name: "Asha Rai",
+    role: "Volunteer cum Community Mobilizer",
+    image: "/images/about/team-asha.png",
+    bio: [
+      "Asha connects Shikshadwar's programmes with the families who need them most, building the trust that keeps children enrolled and attending consistently.",
+      "She works closely with parents and local community leaders to identify gaps our programmes can address, from school dropouts to healthcare access.",
+    ],
+  },
 ];
+
+export function getTeamMember(slug: string) {
+  return team.find((member) => member.slug === slug);
+}

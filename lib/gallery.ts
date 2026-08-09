@@ -16,7 +16,7 @@ export const galleryCategoryLabels: Record<GalleryCategory, string> = {
   healthcare: "Healthcare",
   livelihood: "Livelihood",
   "youth-empowerment": "Youth Empowerment",
-  "sustainable-development": "Sustainable Development",
+  "sustainable-development": "Environment Sustainability",
 };
 
 const educationCount = 20;

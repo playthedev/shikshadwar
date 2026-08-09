@@ -32,9 +32,9 @@ export function FinalCta() {
           quality={92}
           className="scale-105 object-cover object-[center_30%]"
         />
-        <div className="absolute inset-0 bg-ink/85" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/40" />
-        <div className="animate-breathe absolute -bottom-32 left-1/4 size-[32rem] rounded-full bg-rust opacity-25 blur-3xl" />
+        <div className="absolute inset-0 bg-paper/85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-paper via-paper/80 to-paper/40" />
+        <div className="animate-breathe absolute -bottom-32 -left-20 size-[28rem] rounded-full bg-rust opacity-25 blur-3xl" />
       </div>
 
       <Container className="relative">
@@ -45,12 +45,12 @@ export function FinalCta() {
               <p className="text-eyebrow text-gold uppercase">Donate</p>
             </div>
 
-            <h2 className="mt-5 max-w-2xl text-display font-heading text-balance text-paper">
+            <h2 className="mt-5 max-w-2xl text-display font-heading text-balance text-ink">
               <RevealText text="Your gift funds a plan, not just a moment." />
             </h2>
 
             <Reveal delay={0.12}>
-              <p className="mt-7 max-w-md text-body-lg leading-relaxed text-paper/70">
+              <p className="mt-7 max-w-md text-body-lg leading-relaxed text-ink/70">
                 Every rupee is accounted for in our published annual reports.
               </p>
 
@@ -71,21 +71,21 @@ export function FinalCta() {
               {tiers.map((tier, index) => (
                 <div
                   key={tier.amount}
-                  className={index > 0 ? "mt-5 border-t border-paper/15 pt-5" : ""}
+                  className={index > 0 ? "mt-5 border-t border-ink/15 pt-5" : ""}
                 >
-                  <dt className="font-heading text-h3 text-paper tabular-nums">{tier.amount}</dt>
-                  <dd className="mt-1 text-sm leading-relaxed text-paper/60">{tier.covers}</dd>
+                  <dt className="font-heading text-h3 text-ink tabular-nums">{tier.amount}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-ink/60">{tier.covers}</dd>
                 </div>
               ))}
             </dl>
             <Link
               href="/annual-reports/"
-              className="group mt-7 inline-flex items-center gap-2 text-sm font-semibold text-paper/80 transition-colors hover:text-paper"
+              className="group mt-7 inline-flex items-center gap-2 text-sm font-semibold text-ink/80 transition-colors hover:text-ink"
             >
               See where it goes
               <span
                 aria-hidden="true"
-                className="h-px w-8 bg-paper/40 transition-all duration-300 group-hover:w-12 group-hover:bg-gold"
+                className="h-px w-8 bg-ink/40 transition-all duration-300 group-hover:w-12 group-hover:bg-gold"
               />
             </Link>
           </Reveal>

@@ -45,29 +45,29 @@ const testimonials = [
 ];
 
 /**
- * Set on ink, as the one dark passage in the middle of the page. The
- * surrounding sections all sit on paper or a tint of it, so this is what
- * gives the scroll a change of pressure — and it puts the beneficiaries'
- * own words, rather than the organisation's, on the page's strongest field.
+ * No section background fill — left on the page's default paper, so it
+ * can't collide with the ink footer below it or any other section's
+ * colour. Distinguished from the surrounding sections by the slider cards
+ * and decorative blurs instead of a flat colour field.
  */
 export function Testimonials() {
   return (
-    <section className="grain-overlay relative overflow-hidden bg-ink py-[clamp(5rem,10vw,10rem)]">
+    <section className="relative overflow-hidden py-[clamp(5rem,10vw,10rem)]">
       <div
         aria-hidden="true"
-        className="animate-breathe absolute -top-40 -left-32 size-[34rem] rounded-full bg-pine opacity-40 blur-3xl"
+        className="animate-breathe absolute -top-40 -left-32 size-[34rem] rounded-full bg-pine-tint blur-3xl"
       />
       <div
         aria-hidden="true"
-        className="animate-float-slow absolute -right-24 -bottom-40 size-[26rem] rounded-full bg-rust opacity-20 blur-3xl"
+        className="animate-float-slow absolute -right-24 -bottom-40 size-[26rem] rounded-full bg-rust-tint blur-3xl"
       />
 
       <Container className="relative">
         <div className="flex items-center gap-3">
-          <span aria-hidden="true" className="h-px w-8 shrink-0 bg-gold" />
-          <p className="text-eyebrow text-gold uppercase">In their words</p>
+          <span aria-hidden="true" className="h-px w-8 shrink-0 bg-rust" />
+          <p className="text-eyebrow text-rust uppercase">In their words</p>
         </div>
-        <h2 className="mt-5 max-w-2xl text-h1 font-heading text-balance text-paper">
+        <h2 className="mt-5 max-w-2xl text-h1 font-heading text-balance text-ink">
           <RevealText text="The people we work with, on what changed." />
         </h2>
 

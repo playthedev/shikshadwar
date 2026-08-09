@@ -31,9 +31,7 @@ export default function DonatePage() {
     <>
       <PageHero
         breadcrumb="Donate"
-        eyebrow="Donate"
         title="Fund a plan, not just a moment."
-        description="₹1,100 covers a month of learning materials and support for one child."
         image={{ src: "/images/hero/slide-02.png", alt: "", objectPosition: "center 30%" }}
       />
 

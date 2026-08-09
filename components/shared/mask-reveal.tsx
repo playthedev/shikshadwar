@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,15 @@ const clipFrom: Record<Direction, string> = {
 
 const CLIP_TO = "inset(0% 0% 0% 0%)";
 
+// Safety net: `whileInView` can fail to fire — an odd viewport, a slow
+// hydration, a browser quirk with the IntersectionObserver it relies on —
+// and when it does, the clip-path this component opens with never gets
+// removed, leaving the photo underneath permanently masked to nothing. That
+// reads exactly like a missing image. Forcing the reveal open after a beat
+// means a failed animation never outlives its usefulness; the normal
+// scroll-triggered reveal still wins the race in the working case.
+const FALLBACK_MS = 1200;
+
 /**
  * Uncovers its children behind a moving edge, and slides the content the
  * short way in the opposite direction as it goes. The counter-movement is
@@ -38,6 +48,12 @@ export function MaskReveal({
   direction = "up",
 }: MaskRevealProps) {
   const reducedMotion = useReducedMotion();
+  const [timedOut, setTimedOut] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTimedOut(true), FALLBACK_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (reducedMotion) {
     return <div className={className}>{children}</div>;
@@ -55,12 +71,14 @@ export function MaskReveal({
       <motion.div
         initial={{ clipPath: clipFrom[direction] }}
         whileInView={{ clipPath: CLIP_TO }}
+        animate={timedOut ? { clipPath: CLIP_TO } : undefined}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 1, delay, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.div
           initial={offset}
           whileInView={{ x: "0%", y: "0%" }}
+          animate={timedOut ? { x: "0%", y: "0%" } : undefined}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
         >

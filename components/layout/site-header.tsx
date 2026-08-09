@@ -56,7 +56,7 @@ export function SiteHeader() {
               <DropdownMenu key={item.label}>
                 <DropdownMenuTrigger
                   className={cn(
-                    "group flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-ink/80 transition-colors hover:text-ink",
+                    "group flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap text-ink/80 transition-colors hover:text-ink",
                     isActive && "text-ink",
                   )}
                 >
@@ -71,9 +71,13 @@ export function SiteHeader() {
                   </span>
                   <ChevronDown aria-hidden="true" className="size-3.5" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className="w-max min-w-48">
                   {item.children.map((child) => (
-                    <DropdownMenuItem key={child.href} render={<Link href={child.href} />}>
+                    <DropdownMenuItem
+                      key={child.href}
+                      render={<Link href={child.href} />}
+                      className="whitespace-nowrap px-2.5 py-1.5"
+                    >
                       {child.label}
                     </DropdownMenuItem>
                   ))}
@@ -84,7 +88,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "group rounded-md px-3 py-2 text-sm font-medium text-ink/80 transition-colors hover:text-ink",
+                  "group rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap text-ink/80 transition-colors hover:text-ink",
                   isActive && "text-ink",
                 )}
               >

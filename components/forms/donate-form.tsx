@@ -40,6 +40,8 @@ export function DonateForm({
   quantityPresets,
   maxQuantity = 10,
   submitLabel = "Donate now",
+  lockAmount = false,
+  onSuccess,
 }: {
   /** Tags the order so the sidebar CTAs on Sponsor a Child / Donate a Tree route to the same checkout with a distinct purpose. */
   defaultPurpose?: string;
@@ -59,8 +61,13 @@ export function DonateForm({
   quantityPresets?: number[];
   maxQuantity?: number;
   submitLabel?: string;
+  /** Renders the amount as a fixed read-only total instead of the preset/custom picker — for checkouts (e.g. the cart) where the amount is already decided. */
+  lockAmount?: boolean;
+  /** Called once a payment is confirmed as paid, e.g. to clear a cart. */
+  onSuccess?: () => void;
 } = {}) {
   const [scriptReady, setScriptReady] = useState(false);
+  const [scriptError, setScriptError] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedPreset, setSelectedPreset] = useState<number | null>(defaultAmount);
@@ -84,6 +91,9 @@ export function DonateForm({
       dateOfBirth: "",
       address: "",
       pincode: "",
+      city: "",
+      state: "",
+      country: "India",
       purpose: mode === "quantity" ? `${defaultPurpose} × ${initialQuantity}` : defaultPurpose,
     },
   });
@@ -107,7 +117,11 @@ export function DonateForm({
 
     if (!scriptReady || typeof window === "undefined" || !window.Razorpay) {
       setStatus("error");
-      setErrorMessage("Payment gateway is still loading. Please try again in a moment.");
+      setErrorMessage(
+        scriptError
+          ? "Couldn't load the payment gateway. Please check your connection or disable any ad blockers, then refresh the page."
+          : "Payment gateway is still loading. Please try again in a moment.",
+      );
       return;
     }
 
@@ -152,6 +166,7 @@ export function DonateForm({
 
             if (verifyRes.ok && verifyData.status === "paid") {
               setStatus("success");
+              onSuccess?.();
             } else {
               setStatus("error");
               setErrorMessage(
@@ -206,17 +221,25 @@ export function DonateForm({
     <>
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        onLoad={() => setScriptReady(true)}
-        onError={() =>
+        onReady={() => setScriptReady(true)}
+        onError={() => {
+          setScriptError(true);
           setErrorMessage(
             "Couldn't load the payment gateway. Please check your connection or disable any ad blockers, then refresh the page.",
-          )
-        }
+          );
+        }}
         strategy="afterInteractive"
       />
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
-        {mode === "quantity" && unitPrice ? (
+        {lockAmount ? (
+          <div className="flex items-center justify-between rounded-(--radius) border border-border bg-muted p-4">
+            <Label>Order total</Label>
+            <p className="font-heading text-h4 tabular-nums text-ink">
+              {`₹${defaultAmount.toLocaleString("en-IN")}`}
+            </p>
+          </div>
+        ) : mode === "quantity" && unitPrice ? (
           <div>
             <Label>{quantityPresets ? `Choose how many ${unitLabel.toLowerCase()}s` : "Quantity"}</Label>
 
@@ -313,12 +336,27 @@ export function DonateForm({
           </div>
         )}
 
+        <p className="text-xs text-muted-foreground">Special characters are not allowed in the full name field.</p>
+
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <Label htmlFor="name">Your name</Label>
+            <Label htmlFor="name">Full name</Label>
             <Input id="name" className="mt-1.5" autoComplete="name" {...register("name")} />
             {errors.name ? (
               <p className="mt-1.5 text-xs text-destructive">{errors.name.message}</p>
+            ) : null}
+          </div>
+          <div>
+            <Label htmlFor="dob">Date of birth</Label>
+            <Input
+              id="dob"
+              type="date"
+              className="mt-1.5"
+              autoComplete="bday"
+              {...register("dateOfBirth")}
+            />
+            {errors.dateOfBirth ? (
+              <p className="mt-1.5 text-xs text-destructive">{errors.dateOfBirth.message}</p>
             ) : null}
           </div>
           <div>
@@ -335,39 +373,10 @@ export function DonateForm({
             ) : null}
           </div>
           <div>
-            <Label htmlFor="phone">Phone</Label>
+            <Label htmlFor="phone">Mobile number</Label>
             <Input id="phone" className="mt-1.5" autoComplete="tel" {...register("phone")} />
             {errors.phone ? (
               <p className="mt-1.5 text-xs text-destructive">{errors.phone.message}</p>
-            ) : null}
-          </div>
-          <div>
-            <Label htmlFor="pan">PAN</Label>
-            <Input
-              id="pan"
-              className="mt-1.5 uppercase"
-              maxLength={10}
-              {...register("pan")}
-            />
-            {errors.pan ? (
-              <p className="mt-1.5 text-xs text-destructive">{errors.pan.message}</p>
-            ) : null}
-            <p className="mt-1.5 text-xs text-muted-foreground">
-              Please note that if you do not provide your PAN Number, you will not be able to
-              claim 50% tax exemption u/s 80G in India.
-            </p>
-          </div>
-          <div>
-            <Label htmlFor="dob">Date of birth</Label>
-            <Input
-              id="dob"
-              type="date"
-              className="mt-1.5"
-              autoComplete="bday"
-              {...register("dateOfBirth")}
-            />
-            {errors.dateOfBirth ? (
-              <p className="mt-1.5 text-xs text-destructive">{errors.dateOfBirth.message}</p>
             ) : null}
           </div>
           <div className="sm:col-span-2">
@@ -381,6 +390,11 @@ export function DonateForm({
             {errors.address ? (
               <p className="mt-1.5 text-xs text-destructive">{errors.address.message}</p>
             ) : null}
+          </div>
+          <div className="sm:col-span-2">
+            <p className="text-xs text-muted-foreground">
+              Entering your pincode will help autofill your city and state.
+            </p>
           </div>
           <div>
             <Label htmlFor="pincode">Pincode</Label>
@@ -396,6 +410,48 @@ export function DonateForm({
               <p className="mt-1.5 text-xs text-destructive">{errors.pincode.message}</p>
             ) : null}
           </div>
+          <div>
+            <Label htmlFor="city">City</Label>
+            <Input id="city" className="mt-1.5" autoComplete="address-level2" {...register("city")} />
+            {errors.city ? (
+              <p className="mt-1.5 text-xs text-destructive">{errors.city.message}</p>
+            ) : null}
+          </div>
+          <div>
+            <Label htmlFor="state">State</Label>
+            <Input id="state" className="mt-1.5" autoComplete="address-level1" {...register("state")} />
+            {errors.state ? (
+              <p className="mt-1.5 text-xs text-destructive">{errors.state.message}</p>
+            ) : null}
+          </div>
+          <div>
+            <Label htmlFor="country">Country</Label>
+            <Input
+              id="country"
+              className="mt-1.5"
+              autoComplete="country-name"
+              {...register("country")}
+            />
+            {errors.country ? (
+              <p className="mt-1.5 text-xs text-destructive">{errors.country.message}</p>
+            ) : null}
+          </div>
+          <div className="sm:col-span-2">
+            <Label htmlFor="pan">PAN number</Label>
+            <Input
+              id="pan"
+              className="mt-1.5 uppercase"
+              maxLength={10}
+              {...register("pan")}
+            />
+            {errors.pan ? (
+              <p className="mt-1.5 text-xs text-destructive">{errors.pan.message}</p>
+            ) : null}
+          </div>
+          <div className="sm:col-span-2 rounded-(--radius) border border-pine/30 bg-pine/5 p-3 text-xs leading-relaxed text-pine">
+            Please note that if you do not provide your PAN Number, you will not be able to claim
+            50% tax exemption u/s 80G in India.
+          </div>
         </div>
 
         {errorMessage ? (
@@ -407,7 +463,7 @@ export function DonateForm({
 
         <Button
           type="submit"
-          disabled={isBusy}
+          disabled={isBusy || (!scriptReady && !scriptError)}
           size="xl"
           className="w-full bg-rust font-semibold text-primary-foreground hover:bg-[var(--rust-strong)]"
         >
@@ -415,6 +471,11 @@ export function DonateForm({
             <>
               <Loader2 aria-hidden="true" className="size-4 animate-spin" />
               {status === "verifying" ? "Confirming payment…" : "Starting payment…"}
+            </>
+          ) : !scriptReady && !scriptError ? (
+            <>
+              <Loader2 aria-hidden="true" className="size-4 animate-spin" />
+              Loading payment gateway…
             </>
           ) : (
             submitLabel

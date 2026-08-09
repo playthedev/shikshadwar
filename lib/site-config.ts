@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: "Shikshadwar",
   url: "https://shikshadwarfoundation.org",
   description:
-    "Shikshadwar Foundation is a Public Charitable Trust empowering underprivileged and marginalised communities across Delhi, Bihar, Uttar Pradesh, Rajasthan and Haryana through education, livelihood, healthcare, youth empowerment and sustainable development programmes.",
+    "Shikshadwar Foundation is a Public Charitable Trust empowering underprivileged and marginalised communities across Delhi, Bihar, Uttar Pradesh, Rajasthan and Haryana through education, livelihood, healthcare, youth empowerment and environment sustainability programmes.",
   founder: "Manish Mandal",
   foundedYear: 2025,
   legalStatus: "Public Charitable Trust, registered under the Indian Trust Act, 1882 (Delhi, July 2025)",
@@ -24,8 +24,13 @@ export const siteConfig = {
     phoneHref: "tel:+919899840108",
     email: "contact@shikshadwarfoundation.org",
   },
+  // TODO: confirm live social profiles with the client before publishing —
+  // every href below is a placeholder like the legacy site's own "#" links.
   social: {
-    // TODO: confirm live social profiles with the client before publishing
+    instagram: "#",
+    facebook: "#",
+    x: "#",
+    linkedin: "#",
   },
 } as const;
 

@@ -14,7 +14,7 @@ import { products } from "@/lib/products";
  */
 export function ProductGrid() {
   return (
-    <section className="border-t border-border bg-muted/40 py-[clamp(4rem,8vw,8rem)]">
+    <section className="border-t border-border bg-[#eef2f4] py-[clamp(4rem,8vw,8rem)]">
       <Container>
         <SectionHeading
           eyebrow="Handmade, not charity"
@@ -22,7 +22,6 @@ export function ProductGrid() {
           description="Every item is stitched by women trained through our Livelihood programme — buying one puts income directly in their hands."
           animateTitle
           layout="split"
-          accent="pine"
         />
 
         <div className="mt-14 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -33,9 +32,7 @@ export function ProductGrid() {
                   <div
                     className={
                       "relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-(--radius) border border-border p-8 " +
-                      (index % 2 === 0
-                        ? "bg-[linear-gradient(135deg,color-mix(in_oklch,var(--pine),white_88%),color-mix(in_oklch,var(--pine),white_78%))] text-pine"
-                        : "bg-[linear-gradient(135deg,color-mix(in_oklch,var(--rust),white_88%),color-mix(in_oklch,var(--rust),white_78%))] text-rust")
+                      "bg-[linear-gradient(135deg,color-mix(in_oklch,var(--rust),white_88%),color-mix(in_oklch,var(--rust),white_78%))] text-rust"
                     }
                   >
                     <ProductIllustrationIcon

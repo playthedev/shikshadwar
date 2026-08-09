@@ -76,7 +76,7 @@ export function SupportACause() {
               <p className="text-eyebrow text-rust uppercase">Support a cause</p>
             </div>
             <h2 className="mt-5 text-h1 font-heading text-balance text-ink">
-              <RevealText text="Put your name to something specific." />
+              <RevealText text="Contribute to a cause that matters." />
             </h2>
           </div>
         </div>

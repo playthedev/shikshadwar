@@ -9,7 +9,7 @@ export function ImpactStats() {
   return (
     <StatBand
       label="Lives touched by programme"
-      eyebrow="By the numbers"
+      eyebrow="Our Impact So Far"
       title="What the work has added up to."
       stats={beneficiaryStats}
       tone="surface"

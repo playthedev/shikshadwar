@@ -76,10 +76,6 @@ export function PageHero({
               style={{ objectPosition: image.objectPosition ?? "center 30%" }}
               className="scale-105 object-cover"
             />
-            {/* Two scrims: one lifting from the base for the headline, one
-                pulling in from the left where the copy actually sits. */}
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/25" />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink/85 to-transparent" />
           </>
         ) : (
           <>
@@ -126,7 +122,7 @@ export function PageHero({
           </div>
         ) : null}
 
-        <h1 className="max-w-4xl text-h1 font-heading text-balance text-paper">
+        <h1 className="hero-heading-shadow max-w-4xl text-display text-balance text-white">
           <RevealText text={title} mode="mount" />
         </h1>
 

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Eczar, Mukta } from "next/font/google";
+import { Anton, Bebas_Neue, Eczar, Mukta, Raleway } from "next/font/google";
+import Script from "next/script";
+import { PreconnectRazorpay } from "@/components/shared/preconnect-razorpay";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import { ScrollProgress } from "@/components/shared/scroll-progress";
-import { WhatsappButton } from "@/components/shared/whatsapp-button";
+import { SocialRail } from "@/components/shared/social-rail";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -18,6 +19,34 @@ const mukta = Mukta({
   variable: "--font-mukta",
   subsets: ["latin", "devanagari"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// Body/paragraph typeface site-wide, per brand refresh.
+const raleway = Raleway({
+  variable: "--font-raleway",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// Heading + hero display typeface site-wide, per brand refresh. Only ships
+// a single (regular) weight — the CSS still asks for 600 so browsers that
+// synthesize bold get the heavier look the design calls for.
+const bebasNeue = Bebas_Neue({
+  variable: "--font-bebas",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+// Scoped to the education page's "Why Education" / "What We Do" heads —
+// a one-off match for a reference layout, deliberately not routed through
+// --font-heading so it doesn't touch the rest of the site's type system.
+const anton = Anton({
+  variable: "--font-anton",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -72,13 +101,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${eczar.variable} ${mukta.variable} h-full`}>
+    <html
+      lang="en"
+      className={`${eczar.variable} ${mukta.variable} ${anton.variable} ${raleway.variable} ${bebasNeue.variable} h-full`}
+    >
       <body className="flex min-h-full flex-col bg-paper text-ink">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <ScrollProgress />
+        {/* Opens the connection to Razorpay's origin as early as possible,
+            hiding most of the DNS/TLS handshake behind the rest of the page
+            load instead of paying it when a donation form first mounts. */}
+        <PreconnectRazorpay />
+        {/* Site-wide, loaded in parallel with the page's own JS instead of
+            after hydration — every donation form below attaches to this
+            same script via its own <Script onReady> rather than re-fetching
+            it, so by the time someone reaches a form it's already loaded. */}
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive" />
         <a
           href="#main-content"
           className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-50 focus-visible:rounded-md focus-visible:bg-ink focus-visible:px-4 focus-visible:py-2 focus-visible:text-paper"
@@ -90,7 +130,7 @@ export default function RootLayout({
           {children}
         </main>
         <SiteFooter />
-        <WhatsappButton />
+        <SocialRail />
       </body>
     </html>
   );

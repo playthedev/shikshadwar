@@ -5,6 +5,7 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/shared/reveal";
 import { ProductGrid } from "@/components/support-us/product-grid";
+import { SponsorshipTabs } from "@/components/sponsorship/sponsorship-tabs";
 import { FinalCta } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
@@ -21,11 +22,11 @@ export default function SupportUsPage() {
     <>
       <PageHero
         breadcrumb="Support Us"
-        eyebrow="Support Us"
         title="Buy something made with purpose."
-        description="Every product here is made by women trained through our Livelihood programme — your purchase is income in their hands, not a handout."
         image={{ src: "/images/gallery/livelihood/live-03.jpeg", alt: "", objectPosition: "center 30%" }}
       />
+
+      <SponsorshipTabs active="support-us" />
 
       <ProductGrid />
 

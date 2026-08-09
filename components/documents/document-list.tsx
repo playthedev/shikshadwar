@@ -6,18 +6,17 @@ import type { DocumentEntry } from "@/lib/documents";
 
 export function DocumentList({
   title,
-  description,
   documents,
-  eyebrow = "Transparency",
 }: {
   title: string;
+  /** No longer shown in the hero (banner copy was trimmed to just the heading) — kept so callers can still describe the page for other uses, e.g. metadata. */
   description: string;
   documents: DocumentEntry[];
   eyebrow?: string;
 }) {
   return (
     <>
-      <PageHero breadcrumb={title} eyebrow={eyebrow} title={title} description={description} />
+      <PageHero breadcrumb={title} title={title} />
 
       <section className="py-[clamp(4rem,8vw,7rem)]">
         <Container>

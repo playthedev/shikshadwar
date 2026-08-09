@@ -2,14 +2,11 @@ import { CheckCircle2 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
-import { sponsorshipProvides, sponsorshipTier } from "@/lib/sponsorship";
+import { sponsorshipMeansIntro, sponsorshipProvides } from "@/lib/sponsorship";
 
 /**
- * What a sponsorship pays for, plus the commitment shape (₹21,000/year, or
- * ₹1,750/month, over a minimum of three years) — set as plain text rather
- * than a second checkout mode, since recurring billing isn't wired up yet.
- * The one-time donate form below this section is where the money actually
- * moves.
+ * "What Does Child Sponsorship Mean?" — the brief's own heading and five
+ * bullets, verbatim.
  */
 export function SponsorBenefits() {
   return (
@@ -17,8 +14,8 @@ export function SponsorBenefits() {
       <Container>
         <SectionHeading
           eyebrow="What sponsorship covers"
-          title="₹21,000 a year changes a child's path"
-          description={`A minimum commitment of ${sponsorshipTier.minimumCommitmentYears} years gives a child the continuity that makes the difference — roughly ₹${sponsorshipTier.monthly.toLocaleString("en-IN")} a month.`}
+          title="What Does Child Sponsorship Mean?"
+          description={sponsorshipMeansIntro}
           animateTitle
           layout="split"
         />
@@ -33,12 +30,6 @@ export function SponsorBenefits() {
             </Reveal>
           ))}
         </ul>
-
-        <Reveal delay={0.15}>
-          <p className="mt-12 border-l-2 border-rust pl-5 text-sm leading-relaxed text-ink/75">
-            {sponsorshipTier.impactLine}
-          </p>
-        </Reveal>
       </Container>
     </section>
   );

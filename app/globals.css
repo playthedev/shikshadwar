@@ -40,8 +40,11 @@
   --color-pine-tint: var(--pine-tint);
   --color-gold-tint: var(--gold-tint);
 
-  --font-sans: var(--font-mukta);
-  --font-heading: var(--font-eczar);
+  /* Body/paragraph copy site-wide. */
+  --font-sans: var(--font-raleway);
+  /* Headings (h1-h4) and the hero banner headline site-wide. */
+  --font-heading: var(--font-bebas);
+  --font-display: var(--font-bebas);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -68,14 +71,25 @@
 
   --text-body-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
 
+  /* Heading ratios follow the Bebas Neue reference spec (41.81px size /
+     53.86px line-height / 1px tracking) expressed as fluid clamps + em
+     tracking so they hold the same proportions at every viewport. */
   --text-h4: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --text-h4--line-height: 1.29;
+  --text-h4--letter-spacing: 0.024em;
   --text-h3: clamp(1.375rem, 1.15rem + 1.1vw, 1.75rem);
-  --text-h2: clamp(1.75rem, 1.3rem + 1.9vw, 2.5rem);
-  --text-h2--line-height: 1.12;
+  --text-h3--line-height: 1.29;
+  --text-h3--letter-spacing: 0.024em;
+  --text-h2: clamp(1.75rem, 1.3rem + 2vw, 2.613rem);
+  --text-h2--line-height: 1.29;
+  --text-h2--letter-spacing: 0.024em;
   --text-h1: clamp(2.25rem, 1.4rem + 3.6vw, 4rem);
-  --text-h1--line-height: 1.05;
-  --text-display: clamp(2.75rem, 1.6rem + 4.8vw, 5.5rem);
-  --text-display--line-height: 1.02;
+  --text-h1--line-height: 1.15;
+  --text-h1--letter-spacing: 0.02em;
+  /* Hero banner headline: 68px / 67px line-height / 1.5px tracking. */
+  --text-display: clamp(2.25rem, 1.2rem + 5.5vw, 4.25rem);
+  --text-display--line-height: 0.985;
+  --text-display--letter-spacing: 0.022em;
 
   /* Editorial extremes. `mega` is for standalone numerals and one-word
      statements that need to carry a whole section on their own — the scale
@@ -87,16 +101,17 @@
 }
 
 :root {
-  /* Brand palette — see design-system notes for rationale */
-  --paper: #faf6ef;
+  /* Brand palette — matched to the Shikshadwar logo (red wordmark, green
+     leaf-book tree, brown trunk) on a bright, light-first background. */
+  --paper: #fefefe;
   --surface: #ffffff;
-  --ink: #211b15;
-  --muted-text: #6b6053;
-  --rust: #a83a2b;
-  --rust-strong: #8f2f22;
-  --pine: #1f4a40;
-  --border-c: #e1d8c7;
-  --gold: #c99a2e;
+  --ink: #1c1a17;
+  --muted-text: #665f56;
+  --rust: #d81e1e;
+  --rust-strong: #b31414;
+  --pine: #2f8f3f;
+  --border-c: #e6e2d9;
+  --gold: #9c6b2e;
 
   /* Tonal tints for section-rhythm variety — same hues, washed toward paper. */
   --rust-tint: color-mix(in oklch, var(--rust), var(--paper) 92%);
@@ -140,7 +155,11 @@
 
   body {
     @apply text-foreground antialiased;
-    font-size: 1rem;
+    /* Paragraph/body copy site-wide: Raleway 18px regular, per brand spec —
+       fluid so it doesn't sit oversized on very small phones. */
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    font-weight: 400;
     line-height: 1.6;
     background-color: var(--paper);
   }
@@ -175,13 +194,47 @@
     color: transparent;
   }
 
+  /* Hero banner headline shadow from the brand spec — kept as its own class
+     since text-shadow isn't part of the fluid type-scale tokens. */
+  .hero-heading-shadow {
+    text-shadow: 10px 0 10px rgba(0, 0, 0, 0.94);
+  }
+
+  /* Headings site-wide: Bebas Neue, weight 600 (synthesized — the family
+     only ships regular), black, with the size/line-height/tracking ratio
+     from the brand spec carried responsively via the fluid type tokens
+     above rather than one fixed px value. */
   h1,
   h2,
   h3,
   h4 {
-    @apply font-heading text-ink;
-    line-height: 1.12;
-    letter-spacing: -0.01em;
+    @apply font-heading;
+    font-weight: 600;
+    color: #000000;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    letter-spacing: var(--text-h1--letter-spacing);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+  }
+
+  h4 {
+    font-size: var(--text-h4);
+    line-height: var(--text-h4--line-height);
+    letter-spacing: var(--text-h4--letter-spacing);
   }
 
   ::selection {

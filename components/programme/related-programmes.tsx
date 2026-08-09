@@ -1,75 +1,59 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { SectionHeading } from "@/components/shared/section-heading";
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
-import { Reveal } from "@/components/shared/reveal";
 import { programmes, type ProgrammeSlug } from "@/lib/programmes";
 
 /**
- * The remaining programmes, as a list the reader can run down rather
- * than a second grid of picture cards. The page has already shown one
- * programme in full and, on most routes, a gallery strip above this — a
- * third block of images would compete with both. Small thumbnails hung off
- * a typographic list keep this as navigation, which is all it needs to be.
+ * The remaining programmes as a plain photo-card grid — matching Smile
+ * Foundation's flat card treatment rather than the site's typographic
+ * numbered list.
  */
 export function RelatedProgrammes({ current }: { current: ProgrammeSlug }) {
   const others = programmes.filter((p) => p.slug !== current);
 
   return (
-    <section className="border-t border-border bg-muted/40 py-[clamp(4rem,8vw,8rem)]">
+    <section className="bg-white py-14 md:py-20">
       <Container>
-        <SectionHeading eyebrow="Keep exploring" title="Our other programmes" animateTitle />
+        <h2 className="text-center font-[family-name:var(--font-display)] text-4xl leading-[1.1] tracking-wide text-black uppercase md:text-5xl">
+          Our Other Programmes
+        </h2>
 
-        <ul className="mt-12 border-t border-ink/10">
-          {others.map((programme, index) => (
-            <Reveal as="li" key={programme.slug} delay={index * 0.05}>
-              <Link
-                href={`/${programme.slug}/`}
-                className="group flex items-center gap-5 border-b border-ink/10 py-5 md:gap-8"
-              >
-                <span className="hidden font-heading text-sm tabular-nums text-ink/30 sm:block">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                <span className="relative size-16 shrink-0 overflow-hidden rounded-(--radius) bg-muted md:size-20">
-                  {programme.image ? (
-                    <Image
-                      src={programme.image.src}
-                      alt=""
-                      fill
-                      sizes="80px"
-                      quality={80}
-                      className="object-cover grayscale transition-all duration-500 ease-(--ease-out-custom) group-hover:scale-105 group-hover:grayscale-0"
-                    />
-                  ) : (
-                    <PhotoPlaceholder
-                      caption=""
-                      tag={programme.tag}
-                      icon={programme.icon}
-                      className="h-full w-full rounded-none border-0 p-0"
-                    />
-                  )}
-                </span>
-
-                <span className="min-w-0 flex-1">
-                  <span className="block font-heading text-h4 text-ink">{programme.cardTitle}</span>
-                  <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-muted-foreground">
-                    {programme.summary}
-                  </span>
-                </span>
-
-                <span
-                  aria-hidden="true"
-                  className="flex size-10 shrink-0 items-center justify-center rounded-full border border-ink/12 text-ink/45 transition-all duration-300 group-hover:border-rust group-hover:bg-rust group-hover:text-primary-foreground"
-                >
-                  <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </span>
-              </Link>
-            </Reveal>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {others.map((programme) => (
+            <Link
+              key={programme.slug}
+              href={`/${programme.slug}/`}
+              className="group overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-black/5 transition-shadow hover:shadow-md"
+            >
+              <div className="relative aspect-[4/3]">
+                {programme.image ? (
+                  <Image
+                    src={programme.image.src}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    quality={80}
+                    className="object-cover"
+                  />
+                ) : (
+                  <PhotoPlaceholder
+                    caption=""
+                    tag={programme.tag}
+                    icon={programme.icon}
+                    className="h-full w-full rounded-none border-0 p-0"
+                  />
+                )}
+              </div>
+              <div className="p-4">
+                <p className="font-semibold text-black">{programme.cardTitle}</p>
+                <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-black/60">
+                  {programme.summary}
+                </p>
+              </div>
+            </Link>
           ))}
-        </ul>
+        </div>
       </Container>
     </section>
   );

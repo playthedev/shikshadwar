@@ -97,23 +97,6 @@ export function Hero() {
           </motion.div>
         </AnimatePresence>
 
-        {/*
-          Three scrims rather than one. A single top-to-bottom gradient either
-          crushes the photo or leaves the headline sitting on unpredictable
-          detail; separating the vertical lift, the left-hand text bed and a
-          corner vignette keeps contrast where the type actually is while the
-          rest of the frame stays open.
-        */}
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 to-ink/10" />
-        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/20 to-transparent" />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 50% 0%, transparent 40%, color-mix(in oklch, var(--ink), transparent 45%) 100%)",
-          }}
-        />
       </motion.div>
 
       <div aria-hidden="true" className="grain-overlay absolute inset-0 -z-10" />
@@ -127,7 +110,7 @@ export function Hero() {
               aria-label={`${slide.headline} — open the programme`}
               className="group/banner block lg:col-span-8"
             >
-              <h1 className="max-w-4xl text-display text-paper transition-colors duration-300 group-hover/banner:text-paper/85">
+              <h1 className="hero-heading-shadow max-w-4xl text-display text-white transition-colors duration-300 group-hover/banner:text-white/85">
                 <RevealText key={slide.headline} text={slide.headline} mode="mount" />
               </h1>
             </Link>

@@ -2,6 +2,7 @@
 
 import { motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 
 interface RevealProps {
@@ -16,8 +17,24 @@ const variants: Variants = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Same safety net as MaskReveal: if `whileInView` never fires (a viewport
+// edge case, a slow hydration, an observer that never sees the element),
+// this forces the content visible after a beat rather than leaving it
+// permanently at opacity 0 — which otherwise reads as missing content.
+const FALLBACK_MS = 1200;
+
+function useRevealFallback() {
+  const [timedOut, setTimedOut] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setTimedOut(true), FALLBACK_MS);
+    return () => clearTimeout(timer);
+  }, []);
+  return timedOut;
+}
+
 export function Reveal({ children, className, delay = 0, as = "div" }: RevealProps) {
   const reducedMotion = useReducedMotion();
+  const timedOut = useRevealFallback();
   const MotionTag = as === "li" ? motion.li : motion.div;
 
   return (
@@ -25,6 +42,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: RevealPro
       className={className}
       initial={reducedMotion ? "visible" : "hidden"}
       whileInView="visible"
+      animate={timedOut ? "visible" : undefined}
       viewport={{ once: true, margin: "-80px" }}
       variants={variants}
       transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
@@ -42,12 +60,14 @@ interface RevealGroupProps {
 
 export function RevealGroup({ children, className, stagger = 0.06 }: RevealGroupProps) {
   const reducedMotion = useReducedMotion();
+  const timedOut = useRevealFallback();
 
   return (
     <motion.div
       className={className}
       initial={reducedMotion ? "visible" : "hidden"}
       whileInView="visible"
+      animate={timedOut ? "visible" : undefined}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ staggerChildren: stagger }}
     >

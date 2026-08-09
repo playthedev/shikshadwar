@@ -7,13 +7,13 @@ import { Reveal } from "@/components/shared/reveal";
 import { sponsoredChildren } from "@/lib/sponsorship";
 
 /**
- * Sponsorship candidates, named and photographed as the client's live site
- * publishes them (standardbookshop.in/ss/sponsor-a-child/). Each card routes
- * to that child's own page — see app/meet-our-stars/[slug]/page.tsx.
+ * Sponsorship candidates, named and photographed per the client's own
+ * "Sponsor a Child" brief. Each card routes to that child's own page — see
+ * app/meet-our-stars/[child]/page.tsx.
  */
 export function ChildGrid() {
   return (
-    <section className="border-t border-border bg-muted/40 py-[clamp(4rem,8vw,8rem)]">
+    <section className="border-t border-border bg-[#eef2f4] py-[clamp(4rem,8vw,8rem)]">
       <Container>
         <SectionHeading
           eyebrow="Waiting for a sponsor"
@@ -21,7 +21,6 @@ export function ChildGrid() {
           description="Every child below is currently enrolled in our education programme and looking for a sponsor to see the year through."
           animateTitle
           layout="split"
-          accent="pine"
         />
 
         <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4">
@@ -36,7 +35,7 @@ export function ChildGrid() {
                         alt={child.image.alt}
                         fill
                         sizes="(min-width: 640px) 25vw, 50vw"
-                        quality={88}
+                        quality={85}
                         className="object-cover transition-transform duration-700 ease-(--ease-out-custom) group-hover:scale-[1.03]"
                       />
                     </div>
@@ -47,10 +46,6 @@ export function ChildGrid() {
                     </p>
                     <p className="mt-0.5 text-sm leading-snug text-muted-foreground">
                       {child.grade} · {child.location}
-                    </p>
-                    <p className="mt-2 text-sm font-semibold tabular-nums text-rust">
-                      {child.priceRange}
-                      <span className="font-normal text-muted-foreground"> / year</span>
                     </p>
                   </figcaption>
                 </figure>

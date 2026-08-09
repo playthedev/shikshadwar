@@ -6,7 +6,7 @@ import { GalleryGrid } from "@/components/gallery/gallery-grid";
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Photos from Shikshadwar Foundation's education, healthcare, livelihood, youth empowerment and sustainable development programmes.",
+    "Photos from Shikshadwar Foundation's education, healthcare, livelihood, youth empowerment and environment sustainability programmes.",
   alternates: {
     canonical: "/gallery/",
   },
@@ -17,9 +17,8 @@ export default function GalleryPage() {
     <>
       <PageHero
         breadcrumb="Gallery"
-        eyebrow="In pictures"
         title="Gallery"
-        description="Moments from classrooms, skilling sessions and community events across our programme areas."
+        image={{ src: "/images/hero/slide-04.png", alt: "", objectPosition: "center 20%" }}
       />
 
       <section className="py-[clamp(3rem,6vw,5rem)]">

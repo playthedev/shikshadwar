@@ -17,12 +17,7 @@ export const metadata: Metadata = {
 export default function MediaReportsPage() {
   return (
     <>
-      <PageHero
-        breadcrumb="Media Reports"
-        eyebrow="Press"
-        title="Media reports"
-        description="Press mentions and media coverage of our work."
-      />
+      <PageHero breadcrumb="Media Reports" title="Media reports" />
 
       <section className="py-[clamp(4rem,8vw,7rem)]">
         <Container>

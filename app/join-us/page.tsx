@@ -49,9 +49,7 @@ export default function JoinUsPage() {
     <>
       <PageHero
         breadcrumb="Join Us"
-        eyebrow="Get involved"
         title="We need your help."
-        description="Do you want to get involved? There are three ways in, and all of them start with a conversation."
         image={{ src: "/images/hero/slide-03.png", alt: "", objectPosition: "center 25%" }}
       />
 
@@ -118,7 +116,7 @@ export default function JoinUsPage() {
         </Container>
       </section>
 
-      <section className="border-t border-border bg-muted/40 py-[clamp(4rem,8vw,8rem)]">
+      <section className="border-t border-border bg-[#eef2f4] py-[clamp(4rem,8vw,8rem)]">
         <Container>
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-4">

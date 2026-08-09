@@ -1,66 +1,43 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { SectionHeading } from "@/components/shared/section-heading";
-import { MaskReveal } from "@/components/shared/mask-reveal";
 import type { ProgrammeImage } from "@/lib/programmes";
 
 /**
- * Photographs from the programme, staggered rather than gridded.
- *
- * Four identical squares in a row is a contact sheet — it flattens every
- * frame to the same importance and gives the eye nothing to follow. Dropping
- * alternate frames down the page and letting the first run wider turns the
- * strip into a sequence.
+ * Photographs from the programme, as a plain uniform grid — matching Smile
+ * Foundation's flat photo-strip treatment rather than the site's staggered
+ * mask-reveal gallery.
  */
 export function ProgrammeGalleryStrip({ images }: { images: ProgrammeImage[] }) {
   return (
-    <section className="py-[clamp(4rem,8vw,8rem)]">
+    <section className="bg-[#eef2f4] py-14 md:py-20">
       <Container>
-        <SectionHeading
-          eyebrow="In pictures"
-          title="On the ground"
-          animateTitle
-          action={
-            <Link
-              href="/gallery/"
-              className="group inline-flex items-center gap-3 text-sm font-semibold text-ink"
-            >
-              <span className="relative">
-                View full gallery
-                <span
-                  aria-hidden="true"
-                  className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-rust transition-transform duration-500 ease-(--ease-out-custom) group-hover:origin-left group-hover:scale-x-100"
-                />
-              </span>
-              <ArrowRight
-                aria-hidden="true"
-                className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
-          }
-        />
+        <div className="text-center">
+          <h2 className="font-[family-name:var(--font-display)] text-4xl leading-[1.1] tracking-wide text-black uppercase md:text-5xl">
+            In Pictures
+          </h2>
+          <Link
+            href="/gallery/"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-white px-5 py-2 text-xs font-semibold tracking-wide text-rust uppercase shadow-sm ring-1 ring-rust/30 transition-colors hover:bg-rust hover:text-white"
+          >
+            View full gallery
+          </Link>
+        </div>
 
-        <ul className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {images.map((image, index) => (
-            <li key={image.src} className={index % 2 === 1 ? "md:mt-12" : ""}>
-              <MaskReveal delay={(index % 4) * 0.07} className="rounded-(--radius) bg-muted">
-                <div
-                  className={`group relative w-full overflow-hidden ${
-                    index % 3 === 0 ? "aspect-[4/5]" : "aspect-square"
-                  }`}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    quality={88}
-                    className="object-cover transition-transform duration-700 ease-(--ease-out-custom) group-hover:scale-105"
-                  />
-                </div>
-              </MaskReveal>
+        <ul className="mt-10 flex flex-wrap justify-center gap-4">
+          {images.map((image) => (
+            <li
+              key={image.src}
+              className="relative aspect-square w-full max-w-[260px] flex-1 basis-[220px] overflow-hidden rounded-lg bg-white"
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes="(min-width: 768px) 260px, 50vw"
+                quality={85}
+                className="object-cover"
+              />
             </li>
           ))}
         </ul>

@@ -19,12 +19,7 @@ export default function BlogPage() {
 
   return (
     <>
-      <PageHero
-        breadcrumb="Blog"
-        eyebrow="Field notes"
-        title="Blog"
-        description="Field notes, programme updates and stories from the communities we work with."
-      />
+      <PageHero breadcrumb="Blog" title="Blog" />
 
       <section className="py-[clamp(4rem,8vw,8rem)]">
         <Container>

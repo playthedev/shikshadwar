@@ -115,22 +115,22 @@ export function TestimonialSlider({ items, className }: TestimonialSliderProps) 
             {activeItems.map((item) => (
               <figure
                 key={`${item.name}-${item.role}`}
-                className="flex h-full flex-col justify-between rounded-(--radius) border border-paper/15 bg-paper/5 p-8"
+                className="flex h-full flex-col justify-between rounded-(--radius) border border-border bg-surface p-8"
               >
                 <span
                   aria-hidden="true"
-                  className="block font-heading text-4xl leading-none text-paper/20 select-none"
+                  className="block font-heading text-4xl leading-none text-ink/15 select-none"
                 >
                   &ldquo;
                 </span>
-                <blockquote className="mt-4 flex-1 text-base leading-relaxed text-paper/90">
+                <blockquote className="mt-4 flex-1 text-base leading-relaxed text-ink/85">
                   {item.quote}
                 </blockquote>
                 <figcaption className="mt-6 flex items-baseline gap-3">
                   <span aria-hidden="true" className="h-px w-8 shrink-0 bg-rust" />
                   <span>
-                    <span className="block font-heading text-base text-paper">{item.name}</span>
-                    <span className="text-sm text-paper/55">{item.role}</span>
+                    <span className="block font-heading text-base text-ink">{item.name}</span>
+                    <span className="text-sm text-muted-foreground">{item.role}</span>
                   </span>
                 </figcaption>
               </figure>
@@ -152,7 +152,7 @@ export function TestimonialSlider({ items, className }: TestimonialSliderProps) 
                 onClick={() => goTo(i, i > safePage ? 1 : -1)}
                 className={cn(
                   "h-1.5 rounded-full transition-all duration-300",
-                  i === safePage ? "w-8 bg-rust" : "w-1.5 bg-paper/25 hover:bg-paper/45",
+                  i === safePage ? "w-8 bg-rust" : "w-1.5 bg-ink/15 hover:bg-ink/30",
                 )}
               />
             ))}
@@ -163,7 +163,7 @@ export function TestimonialSlider({ items, className }: TestimonialSliderProps) 
               type="button"
               onClick={() => goTo(safePage - 1, -1)}
               aria-label="Previous testimonials"
-              className="flex size-10 items-center justify-center rounded-full border border-paper/25 text-paper transition-colors hover:border-paper/60 hover:bg-paper/10"
+              className="flex size-10 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-ink/40 hover:bg-ink/5"
             >
               <ChevronLeft aria-hidden="true" className="size-4" />
             </button>
@@ -171,7 +171,7 @@ export function TestimonialSlider({ items, className }: TestimonialSliderProps) 
               type="button"
               onClick={() => goTo(safePage + 1, 1)}
               aria-label="Next testimonials"
-              className="flex size-10 items-center justify-center rounded-full border border-paper/25 text-paper transition-colors hover:border-paper/60 hover:bg-paper/10"
+              className="flex size-10 items-center justify-center rounded-full border border-border text-ink transition-colors hover:border-ink/40 hover:bg-ink/5"
             >
               <ChevronRight aria-hidden="true" className="size-4" />
             </button>

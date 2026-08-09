@@ -138,7 +138,7 @@ export function GalleryGrid() {
       </motion.ul>
 
       <Dialog open={active !== null} onOpenChange={(open) => !open && setActive(null)}>
-        <DialogContent className="max-w-4xl bg-transparent p-0 ring-0 sm:max-w-4xl" showCloseButton>
+        <DialogContent className="max-w-4xl bg-transparent p-0 ring-0 sm:max-w-4xl" showCloseButton={false}>
           <DialogTitle className="sr-only">
             {active !== null ? visible[active]?.alt : "Gallery photo"}
           </DialogTitle>
