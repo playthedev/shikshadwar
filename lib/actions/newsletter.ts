@@ -3,13 +3,14 @@
 import { newsletterSchema } from "@/lib/validations/newsletter-schema";
 import { siteConfig } from "@/lib/site-config";
 import { newsletterEmailTemplate, newsletterWelcomeTemplate } from "@/lib/email-template";
+import { isMailConfigured, sendMail } from "@/lib/mailer";
 
 export type NewsletterActionState =
   | { status: "idle" }
   | { status: "success" }
   | { status: "error"; message: string };
 
-// TODO: set RESEND_API_KEY in the environment to enable real delivery.
+// TODO: set SMTP_HOST / SMTP_USER / SMTP_PASS in the environment to enable real delivery.
 export async function submitNewsletterSignup(
   _prev: NewsletterActionState,
   formData: FormData,
@@ -32,10 +33,9 @@ export async function submitNewsletterSignup(
     return { status: "success" };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+  if (!isMailConfigured()) {
     console.error(
-      "[newsletter-signup] RESEND_API_KEY is not set — submission was not delivered:",
+      "[newsletter-signup] SMTP is not configured — submission was not delivered:",
       parsed.data,
     );
     return {
@@ -48,42 +48,21 @@ export async function submitNewsletterSignup(
   const welcome = newsletterWelcomeTemplate(parsed.data);
 
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: `Shikshadwar Website <onboarding@resend.dev>`,
-        // TODO: verify shikshadwarfoundation.org in Resend, then switch back to siteConfig.contact.email.
-        to: "arishkhan3312@gmail.com",
-        subject: notification.subject,
-        html: notification.html,
-        text: notification.text,
-      }),
+    await sendMail({
+      to: siteConfig.contact.email,
+      subject: notification.subject,
+      html: notification.html,
+      text: notification.text,
     });
-
-    if (!res.ok) {
-      throw new Error(`Resend responded ${res.status}: ${await res.text()}`);
-    }
 
     // Best-effort welcome email to the subscriber — a failure here shouldn't
     // fail the sign-up, since the admin notification above already landed.
     try {
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: `Shikshadwar Foundation <onboarding@resend.dev>`,
-          to: parsed.data.email,
-          subject: welcome.subject,
-          html: welcome.html,
-          text: welcome.text,
-        }),
+      await sendMail({
+        to: parsed.data.email,
+        subject: welcome.subject,
+        html: welcome.html,
+        text: welcome.text,
       });
     } catch (welcomeError) {
       console.error("[newsletter-signup] welcome email failed:", welcomeError);
