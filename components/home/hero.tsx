@@ -101,7 +101,7 @@ export function Hero() {
 
       <div aria-hidden="true" className="grain-overlay absolute inset-0 -z-10" />
 
-      <Container className="relative flex min-h-[min(94vh,880px)] flex-col justify-end pt-36 pb-10 md:pb-14">
+      <Container className="relative flex min-h-[min(74vh,680px)] flex-col justify-end pt-36 pb-10 md:pb-14">
         <motion.div style={{ y: copyY, opacity: copyOpacity }}>
           <div className="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
             <Link
