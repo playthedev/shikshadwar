@@ -208,6 +208,127 @@ export function newsletterWelcomeTemplate(data: {
   };
 }
 
+function formatInr(amountInPaise: number): string {
+  return (amountInPaise / 100).toLocaleString("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  });
+}
+
+export function donationReceiptTemplate(data: {
+  name: string;
+  amount: number;
+  purpose?: string;
+  paymentId: string;
+  paidAt: Date;
+}): { subject: string; html: string; text: string } {
+  const firstName = data.name.trim().split(/\s+/)[0] || data.name;
+  const amount = formatInr(data.amount);
+  const dateStr = data.paidAt.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+
+  return {
+    subject: `Thank you for your donation of ${amount} — Shikshadwar Foundation`,
+    html: `<!doctype html>
+<html>
+  <body style="margin:0;padding:0;background:#f4efe6;font-family:Georgia,'Times New Roman',serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe6;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #ece5db;">
+            <tr>
+              <td style="background:#211b15;padding:32px 28px;text-align:center;">
+                <p style="margin:0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#f4efe6;opacity:.7;">Shikshadwar Foundation</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:36px 32px 8px;text-align:center;">
+                <div style="width:56px;height:56px;line-height:56px;border-radius:50%;background:#fbeee9;color:#a83a2b;font-size:26px;margin:0 auto 20px;">&#10003;</div>
+                <h1 style="margin:0 0 12px;font-size:22px;color:#211b15;">Thank you, ${escapeHtml(firstName)}!</h1>
+                <p style="margin:0;font-size:15px;line-height:1.6;color:#4a423a;">
+                  Your donation of <strong style="color:#211b15;">${amount}</strong> has been received successfully.
+                  It will go directly toward ${data.purpose ? `<strong style="color:#211b15;">${escapeHtml(data.purpose)}</strong>` : "our programmes"}.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:8px 32px 0;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe6;border-radius:10px;">
+                  <tr>
+                    <td style="padding:16px 20px;">
+                      <p style="margin:0 0 6px;font-size:13px;color:#6b6259;">Amount</p>
+                      <p style="margin:0 0 14px;font-size:15px;color:#211b15;">${amount}</p>
+                      <p style="margin:0 0 6px;font-size:13px;color:#6b6259;">Date</p>
+                      <p style="margin:0 0 14px;font-size:15px;color:#211b15;">${escapeHtml(dateStr)}</p>
+                      <p style="margin:0 0 6px;font-size:13px;color:#6b6259;">Payment ID</p>
+                      <p style="margin:0;font-size:14px;color:#211b15;font-family:monospace;">${escapeHtml(data.paymentId)}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 8px;text-align:center;">
+                <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6259;">
+                  Shikshadwar Foundation is registered under PAN ${escapeHtml(siteConfig.tax.pan)} and
+                  80G certificate ${escapeHtml(siteConfig.tax.certificate80G)}. Your official 80G tax-exemption
+                  receipt will follow separately by email.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:20px 32px 36px;text-align:center;">
+                <p style="margin:0;font-size:13px;color:#6b6259;">
+                  Questions about this donation? Reach us at
+                  <a href="mailto:${siteConfigEmail}" style="color:#a83a2b;text-decoration:none;">${siteConfigEmail}</a>
+                  or call ${escapeHtml(sitePhone)}.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 28px;background:#f4efe6;">
+                <p style="margin:0;font-size:12px;color:#6b6259;text-align:center;">
+                  Shikshadwar Foundation &middot; Delhi, India
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`,
+    text: `Thank you, ${firstName}!\n\nYour donation of ${amount} has been received successfully. It will go directly toward ${data.purpose || "our programmes"}.\n\nAmount: ${amount}\nDate: ${dateStr}\nPayment ID: ${data.paymentId}\n\nShikshadwar Foundation is registered under PAN ${siteConfig.tax.pan} and 80G certificate ${siteConfig.tax.certificate80G}. Your official 80G tax-exemption receipt will follow separately by email.\n\nQuestions? Reach us at ${siteConfigEmail} or call ${sitePhone}.\n\nShikshadwar Foundation · Delhi, India`,
+  };
+}
+
+export function donationNotificationTemplate(data: {
+  name: string;
+  email: string;
+  phone?: string;
+  amount: number;
+  purpose?: string;
+  method?: string;
+  paymentId: string;
+  orderId: string;
+}): { subject: string; html: string; text: string } {
+  const amount = formatInr(data.amount);
+  return {
+    subject: `[Website] New donation: ${amount} from ${data.name}`,
+    html: wrapEmail("New donation received", [
+      { label: "Donor", value: data.name },
+      { label: "Email", value: data.email },
+      { label: "Phone", value: data.phone || "—" },
+      { label: "Amount", value: amount },
+      { label: "Purpose", value: data.purpose || "general" },
+      { label: "Method", value: data.method || "—" },
+      { label: "Payment ID", value: data.paymentId },
+      { label: "Order ID", value: data.orderId },
+    ]),
+    text: `New donation received\n\nDonor: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || "—"}\nAmount: ${amount}\nPurpose: ${data.purpose || "general"}\nMethod: ${data.method || "—"}\nPayment ID: ${data.paymentId}\nOrder ID: ${data.orderId}`,
+  };
+}
+
 export function volunteerEmailTemplate(data: {
   name: string;
   email: string;

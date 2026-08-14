@@ -4,6 +4,9 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { DonationModel } from "@/lib/models/donation";
 import { getRazorpayInstance } from "@/lib/razorpay";
 import { verifyPaymentSchema } from "@/lib/validations/donate-schema";
+import { isMailConfigured, sendMail } from "@/lib/mailer";
+import { donationNotificationTemplate, donationReceiptTemplate } from "@/lib/email-template";
+import { siteConfig } from "@/lib/site-config";
 
 function safeEqual(a: string, b: string) {
   const bufA = Buffer.from(a);
@@ -70,7 +73,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (payment.status === "captured") {
-      await DonationModel.updateOne(
+      const result = await DonationModel.updateOne(
         { razorpayOrderId: razorpay_order_id, status: { $ne: "paid" } },
         {
           $set: {
@@ -81,6 +84,53 @@ export async function POST(request: NextRequest) {
           },
         },
       );
+
+      // Only the call that actually flips created -> paid sends mail — verify
+      // can be hit more than once (retry, duplicate tab), and we don't want
+      // to spam the donor or the org with repeat notifications.
+      if (result.modifiedCount > 0 && isMailConfigured()) {
+        const receipt = donationReceiptTemplate({
+          name: donation.donor.name,
+          amount: donation.amount,
+          purpose: donation.purpose,
+          paymentId: razorpay_payment_id,
+          paidAt: new Date(),
+        });
+        const notification = donationNotificationTemplate({
+          name: donation.donor.name,
+          email: donation.donor.email,
+          phone: donation.donor.phone,
+          amount: donation.amount,
+          purpose: donation.purpose,
+          method: payment.method,
+          paymentId: razorpay_payment_id,
+          orderId: razorpay_order_id,
+        });
+
+        // Best-effort — the donation already landed and is recorded, so a
+        // failed email shouldn't surface as an error to the donor.
+        try {
+          await sendMail({
+            to: donation.donor.email,
+            subject: receipt.subject,
+            html: receipt.html,
+            text: receipt.text,
+          });
+        } catch (error) {
+          console.error("[donate/verify] receipt email failed:", error);
+        }
+
+        try {
+          await sendMail({
+            to: siteConfig.contact.email,
+            subject: notification.subject,
+            html: notification.html,
+            text: notification.text,
+          });
+        } catch (error) {
+          console.error("[donate/verify] owner notification email failed:", error);
+        }
+      }
     }
 
     return NextResponse.json({ status: payment.status === "captured" ? "paid" : "pending" });

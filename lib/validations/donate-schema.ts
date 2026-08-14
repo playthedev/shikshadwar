@@ -2,7 +2,9 @@ import { z } from "zod";
 
 // Amounts are collected from the client in whole rupees and converted to
 // paise server-side. Bounds guard against fat-finger and abuse amounts.
-export const MIN_DONATION_INR = 50;
+// TEMP: lowered to ₹1 (Razorpay's own floor) for live testing — restore to
+// 50 before go-live.
+export const MIN_DONATION_INR = 1;
 export const MAX_DONATION_INR = 500_000;
 // Above this amount, PAN becomes mandatory so the donor can be issued an 80G
 // tax-exemption receipt — below it, PAN stays optional.
