@@ -22,6 +22,15 @@ interface EventSlide {
   description: string;
   ctaLabel: string;
   ctaHref: string;
+  /** "contain" shows the whole image inside the box instead of cropping it
+   * to fill the 4:3 frame — use for photos whose aspect ratio/framing
+   * doesn't match the rest of the carousel. */
+  fit?: "cover" | "contain";
+  /** Blurred cover-fit copy of the same image behind a "contain" slide, so
+   * there's no blank letterboxing. Skip it for pale/high-key images (e.g. a
+   * poster with a cream background) where a blur just reads as washed-out
+   * blank space instead of a backdrop. */
+  blurBackdrop?: boolean;
 }
 
 const currentEventContent = {
@@ -34,6 +43,7 @@ const currentEventContent = {
 };
 
 const currentEventSlides: EventSlide[] = [
+  { src: "/images/impa.jpeg", alt: "Children and volunteers at a recent Shikshadwar Foundation event", ...currentEventContent, fit: "contain" },
   { src: "/images/gallery/education/edu-05.png", alt: "A non-formal education session at a Shikshadwar centre", ...currentEventContent },
   { src: "/images/gallery/healthcare/health-kdliver2.jpeg", alt: "A Liver Care Foundation health-awareness session for children and volunteers", ...currentEventContent },
   { src: "/images/gallery/livelihood/live-03.jpeg", alt: "A community member practising embroidery skills in a livelihood training session", ...currentEventContent },
@@ -43,6 +53,17 @@ const currentEventSlides: EventSlide[] = [
 // child/product it represents — a Meet Our Stars slide links to that child's
 // own page, a Support Us slide links to that product's own checkout page.
 const sponsorAndSupportSlides: EventSlide[] = [
+  {
+    src: "/images/republic.jpeg",
+    alt: "Shikshadwar Foundation volunteers and children at a community event",
+    eyebrow: "Support Us",
+    title: "Support Our Work",
+    description: "Every contribution helps us reach more children and communities in need.",
+    ctaLabel: "Donate Now",
+    ctaHref: "/donate/",
+    fit: "contain",
+    blurBackdrop: false,
+  },
   ...sponsoredChildren.slice(0, 3).map((child) => ({
     src: child.image.src,
     alt: child.image.alt,
@@ -122,7 +143,7 @@ function EventCard({
     <Reveal delay={delay} className="h-full">
       <TiltCard max={3} className="h-full rounded-(--radius)">
         <div className="group/card grain-overlay relative flex h-full flex-col overflow-hidden rounded-(--radius) border border-border bg-paper shadow-lg transition-shadow duration-500 hover:shadow-2xl">
-          <div className="relative aspect-[4/3] overflow-hidden">
+          <div className="relative aspect-[4/3] overflow-hidden bg-surface">
             <AnimatePresence initial={false} mode="sync">
               <motion.div
                 key={slide.src}
@@ -132,13 +153,27 @@ function EventCard({
                 exit={{ opacity: 0 }}
                 transition={{ duration: reducedMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
+                {slide.fit === "contain" && slide.blurBackdrop !== false ? (
+                  <Image
+                    src={slide.src}
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    sizes="(min-width: 768px) 45vw, 90vw"
+                    quality={75}
+                    className="scale-110 object-cover opacity-40 blur-2xl"
+                  />
+                ) : null}
                 <Image
                   src={slide.src}
                   alt={slide.alt}
                   fill
                   sizes="(min-width: 768px) 45vw, 90vw"
                   quality={92}
-                  className="object-cover transition-transform duration-700 ease-(--ease-out-custom) group-hover/card:scale-[1.04]"
+                  className={cn(
+                    "transition-transform duration-700 ease-(--ease-out-custom) group-hover/card:scale-[1.04]",
+                    slide.fit === "contain" ? "object-contain" : "object-cover",
+                  )}
                 />
               </motion.div>
             </AnimatePresence>
