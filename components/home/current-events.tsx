@@ -120,18 +120,19 @@ function EventCard({
   delay?: number;
 }) {
   const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const reducedMotion = useReducedMotion();
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || isPaused) return;
     timerRef.current = setInterval(() => {
       setIndex((current) => (current + 1) % slides.length);
     }, AUTOPLAY_MS);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [reducedMotion, slides.length]);
+  }, [reducedMotion, isPaused, slides.length]);
 
   function goTo(next: number) {
     setIndex(((next % slides.length) + slides.length) % slides.length);
@@ -142,7 +143,13 @@ function EventCard({
   return (
     <Reveal delay={delay} className="h-full">
       <TiltCard max={3} className="h-full rounded-(--radius)">
-        <div className="group/card grain-overlay relative flex h-full flex-col overflow-hidden rounded-(--radius) border border-border bg-paper shadow-lg transition-shadow duration-500 hover:shadow-2xl">
+        <div
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onFocus={() => setIsPaused(true)}
+          onBlur={() => setIsPaused(false)}
+          className="group/card grain-overlay relative flex h-full flex-col overflow-hidden rounded-(--radius) border border-border bg-paper shadow-lg transition-shadow duration-500 hover:shadow-2xl"
+        >
           <div className="relative aspect-[4/3] overflow-hidden bg-surface">
             <AnimatePresence initial={false} mode="sync">
               <motion.div
