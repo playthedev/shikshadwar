@@ -128,6 +128,20 @@ export function SiteFooter() {
             </Link>
           </div>
         </Container>
+        <Container className="pb-6 text-xs text-paper/50">
+          <p>
+            This site is built by{" "}
+            <a
+              href="https://www.nexmogen.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium hover:text-paper/80"
+            >
+              Nexmogen
+            </a>
+            .
+          </p>
+        </Container>
       </div>
     </footer>
   );
