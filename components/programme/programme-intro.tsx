@@ -56,12 +56,12 @@ export function ProgrammeIntro({
 
                 {section.image ? (
                   <Reveal delay={0.15}>
-                    <div className="relative mx-auto mt-6 aspect-[2/1] w-full max-w-2xl overflow-hidden rounded-xl">
+                    <div className="relative mt-6 aspect-[2/1] w-full overflow-hidden rounded-xl">
                       <Image
                         src={section.image.src}
                         alt={section.image.alt}
                         fill
-                        sizes="(min-width: 1024px) 42rem, 100vw"
+                        sizes="(min-width: 1024px) 48rem, 100vw"
                         quality={90}
                         className="object-cover"
                         style={
@@ -96,13 +96,13 @@ export function ProgrammeIntro({
             className={cn("py-14 md:py-20", i % 2 === 1 ? "bg-[#eef2f4]" : "bg-white")}
           >
             <Container>
-              <div className="mx-auto max-w-3xl text-center">
+              <div className="text-center">
                 <Reveal>
                   <h2 className="font-heading text-h3 text-balance text-ink">
                     {section.heading}
                   </h2>
                 </Reveal>
-                <div className="mt-6 space-y-5">
+                <div className="mx-auto mt-6 max-w-5xl space-y-5">
                   {section.paragraphs.map((paragraph, index) => (
                     <Reveal key={index} delay={0.05 + index * 0.05}>
                       <p className="text-base leading-relaxed text-neutral-600">{paragraph}</p>
@@ -163,12 +163,12 @@ export function ProgrammeIntro({
 
             {image ? (
               <Reveal delay={0.08}>
-                <div className="relative mx-auto aspect-[2/1] w-full max-w-2xl overflow-hidden rounded-xl">
+                <div className="relative aspect-[2/1] w-full overflow-hidden rounded-xl">
                   <Image
                     src={image.src}
                     alt={image.alt}
                     fill
-                    sizes="(min-width: 1024px) 42rem, 100vw"
+                    sizes="(min-width: 1024px) 48rem, 100vw"
                     quality={90}
                     className="object-cover"
                     style={image.objectPosition ? { objectPosition: image.objectPosition } : undefined}

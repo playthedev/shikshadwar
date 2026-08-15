@@ -32,7 +32,7 @@ export function ProgrammeImpactSponsors({
             <h2 className="font-heading text-h2 text-balance text-ink">
               Impact 2025–26
             </h2>
-            <div className="mt-5 space-y-4 text-base leading-relaxed text-neutral-600">
+            <div className="mt-5 space-y-4 text-justify text-base leading-relaxed text-neutral-600">
               <p>
                 During the 2025–26 academic year, <strong className="text-ink">Shikshadwar Foundation</strong>{" "}
                 identified and registered <strong className="text-ink">{total.value}{total.suffix} out-of-school and vulnerable children</strong> across
@@ -85,7 +85,7 @@ export function ProgrammeImpactSponsors({
             <h2 className="font-heading text-h2 text-balance text-ink">
               {sponsor.title}
             </h2>
-            <div className="mt-5 space-y-4 text-base leading-relaxed text-neutral-600">
+            <div className="mt-5 space-y-4 text-justify text-base leading-relaxed text-neutral-600">
               {sponsor.paragraphs.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}

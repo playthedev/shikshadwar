@@ -6,9 +6,18 @@ import { MaskReveal } from "@/components/shared/mask-reveal";
 import { Reveal } from "@/components/shared/reveal";
 import { ourStory } from "@/lib/our-story-data";
 
-const groundPhoto = {
+// Row 1's photo — the founder's own photo, paired with his story.
+const founderPhoto = {
   src: "/images/gallery/education/edu-04.png",
   alt: "Manish Mandal and children at a Shikshadwar non-formal education session",
+};
+
+// Row 2's photo — a community awareness session, paired with the
+// Foundation's own story. Reused from the education gallery rather than a
+// new upload.
+const foundationPhoto = {
+  src: "/images/gallery/education/edu-14.png",
+  alt: "A Shikshadwar community health-awareness session in front of the Foundation banner",
 };
 
 interface Paragraph {
@@ -17,7 +26,9 @@ interface Paragraph {
   bold?: string[];
 }
 
-const paragraphs: Paragraph[] = [
+// Manish's own journey, up to the moment that led him to found the
+// Foundation — paired with his photo in row 1.
+const founderParagraphs: Paragraph[] = [
   { text: ourStory.founder.paragraphs[0] },
   { text: ourStory.founder.paragraphs[1], bold: ["Manish Mandal"] },
   { text: ourStory.founder.paragraphs[2], bold: ["Childline 1098"] },
@@ -40,6 +51,11 @@ const paragraphs: Paragraph[] = [
     ],
   },
   { text: ourStory.founder.paragraphs[7] },
+];
+
+// The Foundation's own founding and mission — paired with the community
+// photo in row 2.
+const foundationParagraphs: Paragraph[] = [
   {
     text: ourStory.foundation.paragraph,
     bold: ["Manish Mandal", "Ms. Silky Aggarwal", "Mr. Suraj Kumar Mandal", "Shikshadwar Foundation"],
@@ -83,12 +99,39 @@ function renderParagraph(text: string, bold: string[] = []): ReactNode {
   );
 }
 
+function StoryPhoto({
+  photo,
+  direction,
+}: {
+  photo: { src: string; alt: string };
+  direction: "left" | "right";
+}) {
+  return (
+    <MaskReveal direction={direction} className="rounded-(--radius)">
+      <div className="relative aspect-[4/3] w-full">
+        <Image
+          src={photo.src}
+          alt={photo.alt}
+          fill
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          quality={90}
+          className="object-cover"
+        />
+        <span className="absolute right-3 bottom-3 flex size-9 items-center justify-center rounded-full bg-paper/90 text-rust shadow-sm">
+          <HeartHandshake aria-hidden="true" className="size-4" />
+        </span>
+      </div>
+    </MaskReveal>
+  );
+}
+
 /**
- * The founding narrative through to the Foundation's establishment — one
- * sticky photo on the left, the full run of paragraphs on the right, top-
- * aligned against each other. Same two-column pattern as the About Us
- * "Why Shikshadwar" section, rather than a zigzag of photo/text rows that
- * drift out of alignment once the paragraph counts between them differ.
+ * The founding narrative — a two-row zigzag, same pattern as the About Us
+ * "Why Shikshadwar" section: Manish's own story (copy left, photo right),
+ * then swapped below for the Foundation's own founding (photo left, copy
+ * right). Plain static columns, vertically centered against each other —
+ * no sticky/pinned photo, so scrolling the page feels like scrolling one
+ * normal block rather than a photo trailing behind.
  */
 export function StoryNarrative() {
   return (
@@ -104,35 +147,39 @@ export function StoryNarrative() {
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-16">
-          <div className="lg:sticky lg:top-28 lg:col-span-5">
-            <Reveal>
-              <MaskReveal direction="left" className="rounded-(--radius)">
-                <div className="relative aspect-[3/4] w-full">
-                  <Image
-                    src={groundPhoto.src}
-                    alt={groundPhoto.alt}
-                    fill
-                    sizes="(min-width: 1024px) 38vw, 100vw"
-                    quality={90}
-                    className="object-cover"
-                  />
-                  <span className="absolute right-3 bottom-3 flex size-9 items-center justify-center rounded-full bg-paper/90 text-rust shadow-sm">
-                    <HeartHandshake aria-hidden="true" className="size-4" />
-                  </span>
-                </div>
-              </MaskReveal>
+        <div className="mt-14 flex flex-col gap-16 md:gap-20">
+          {/* Row 1 — copy left, photo right. */}
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="space-y-4 lg:col-span-6">
+              {founderParagraphs.map((paragraph, index) => (
+                <Reveal key={index} delay={0.04 * index}>
+                  <p className="text-justify text-sm leading-relaxed text-muted-foreground">
+                    {renderParagraph(paragraph.text, paragraph.bold)}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal delay={0.1} className="lg:col-span-6 lg:col-start-7">
+              <StoryPhoto photo={founderPhoto} direction="right" />
             </Reveal>
           </div>
 
-          <div className="space-y-4 lg:col-span-7">
-            {paragraphs.map((paragraph, index) => (
-              <Reveal key={index} delay={0.04 * index}>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {renderParagraph(paragraph.text, paragraph.bold)}
-                </p>
-              </Reveal>
-            ))}
+          {/* Row 2 — swapped: photo left, copy right. */}
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+            <Reveal delay={0.05} className="lg:order-1 lg:col-span-6">
+              <StoryPhoto photo={foundationPhoto} direction="left" />
+            </Reveal>
+
+            <div className="space-y-4 lg:order-2 lg:col-span-6">
+              {foundationParagraphs.map((paragraph, index) => (
+                <Reveal key={index} delay={0.04 * index}>
+                  <p className="text-justify text-sm leading-relaxed text-muted-foreground">
+                    {renderParagraph(paragraph.text, paragraph.bold)}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </Container>
