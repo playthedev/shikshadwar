@@ -13,8 +13,8 @@ export interface HeroSlide {
 // client's reference site — one per programme, in the same order.
 export const heroSlides: HeroSlide[] = [
   {
-    image: "/images/hero/education-banner.png",
-    alt: "Two students at a Shikshadwar education centre smile while holding their schoolbooks",
+    image: "/images/hero/education-banner.jpg",
+    alt: "A student at a Shikshadwar education centre holds her schoolbooks in front of the Shikshadwar Foundation banner",
     objectPosition: "center 15%",
     headline: "Education is Empowerment",
     subheading:
@@ -44,8 +44,8 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/youth-empowerment-banner.jpg",
-    alt: "A group of young volunteers stand together in front of a Shikshadwar Foundation notice board",
-    objectPosition: "center 35%",
+    alt: "Community members stand together in front of a Shikshadwar Foundation registration banner",
+    objectPosition: "center 30%",
     headline: "Empower. Skill. Employ. Transform.",
     subheading: "Empower. Skill. Employ. Transform. — building youth as leaders of social change.",
     ctaLabel: "Donate Now",

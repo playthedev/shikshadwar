@@ -5,14 +5,14 @@ import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { addToCart } from "@/lib/cart-store";
+import { productCart } from "@/lib/cart-store";
 
 const MAX_QUANTITY = 10;
 
 /**
- * Quantity picker + Add to Cart for a Support Us product, matching the same
- * cart/checkout flow used on Meet Our Stars — add one or more, then check
- * out from /cart.
+ * Quantity picker + Add to Cart for a Support Us product — add one or more,
+ * then check out from /support-us/cart/. This is Support Us's own cart,
+ * entirely separate from the Meet Our Stars sponsorship cart.
  */
 export function ProductDonateForm({
   slug,
@@ -33,7 +33,7 @@ export function ProductDonateForm({
   }
 
   function handleAddToCart() {
-    addToCart(
+    productCart.addToCart(
       {
         slug,
         name,
@@ -96,7 +96,7 @@ export function ProductDonateForm({
           <Button
             type="button"
             size="xl"
-            onClick={() => router.push("/cart/")}
+            onClick={() => router.push("/support-us/cart/")}
             className="bg-rust font-semibold text-primary-foreground hover:bg-[var(--rust-strong)]"
           >
             View cart

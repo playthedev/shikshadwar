@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ChevronDown, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { addToCart } from "@/lib/cart-store";
+import { sponsorshipCart } from "@/lib/cart-store";
 
 type Frequency = "Monthly" | "Yearly";
 
@@ -15,7 +15,8 @@ const fieldClass =
 /**
  * "Select Your Donation" frequency picker + Add to Cart, matching the
  * client's reference flow: pick Monthly/Yearly, see the amount update, add
- * the child to the shared cart, then check out from /cart.
+ * the child to Meet Our Stars' own cart, then check out from
+ * /meet-our-stars/cart/ — entirely separate from the Support Us product cart.
  */
 export function ChildDonateForm({
   slug,
@@ -37,7 +38,7 @@ export function ChildDonateForm({
   const amount = frequency === "Monthly" ? monthlyAmount : yearlyAmount;
 
   function handleAddToCart() {
-    addToCart({
+    sponsorshipCart.addToCart({
       slug,
       name: `Meet ${name}`,
       image,
@@ -89,7 +90,7 @@ export function ChildDonateForm({
           <Button
             type="button"
             size="xl"
-            onClick={() => router.push("/cart/")}
+            onClick={() => router.push("/meet-our-stars/cart/")}
             className="bg-rust font-semibold text-primary-foreground hover:bg-[var(--rust-strong)]"
           >
             View cart
@@ -103,7 +104,7 @@ export function ChildDonateForm({
           className="bg-rust font-semibold text-primary-foreground hover:bg-[var(--rust-strong)]"
         >
           <ShoppingCart aria-hidden="true" className="size-4" />
-          Add to cart
+          Support us
         </Button>
       )}
     </div>

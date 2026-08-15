@@ -26,6 +26,16 @@ const educationImages: GalleryImage[] = Array.from({ length: educationCount }, (
   category: "education",
 }));
 
+const newEducationImages: GalleryImage[] = [
+  { file: "edu-21.jpg", alt: "Children take part in a Shikshadwar non-formal education session" },
+  { file: "edu-22.jpeg", alt: "Children hold hands during an outdoor activity at a Shikshadwar programme centre" },
+  { file: "edu-23.jpg", alt: "A mother and her children stand together in front of a Shikshadwar Foundation banner" },
+].map(({ file, alt }) => ({
+  src: `/images/gallery/education/${file}`,
+  alt,
+  category: "education" as const,
+}));
+
 const sustainableDevelopmentImages: GalleryImage[] = [
   "SCH-ENVIRONMENT-4",
   "SCH-ENVIRONMENT-6",
@@ -56,6 +66,7 @@ const healthcareImages: GalleryImage[] = [
 
 export const galleryImages: GalleryImage[] = [
   ...educationImages,
+  ...newEducationImages,
   ...healthcareImages,
   {
     src: "/images/gallery/livelihood/live-01.jpeg",
@@ -100,6 +111,26 @@ export const galleryImages: GalleryImage[] = [
   {
     src: "/images/gallery/youth-development/youth-02.jpeg",
     alt: "Young people taking part in a Shikshadwar youth empowerment session",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/youth-03.jpg",
+    alt: "Youth trainees hold their SkillServ insurance-marketing certificates of completion at a Shikshadwar training programme",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/youth-04.jpg",
+    alt: "A Shikshadwar youth skilling and training session",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/youth-05.jpg",
+    alt: "A Shikshadwar youth skilling and training session",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/youth-06.jpg",
+    alt: "A Shikshadwar trainee receives his SkillServ insurance-marketing certificate of completion",
     category: "youth-empowerment",
   },
   ...sustainableDevelopmentImages,

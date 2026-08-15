@@ -3,6 +3,7 @@ import {
   InstagramIcon,
   LinkedinIcon,
   XIcon,
+  YoutubeIcon,
 } from "@/components/shared/social-icons";
 import { siteConfig } from "@/lib/site-config";
 
@@ -10,6 +11,7 @@ const links = [
   { label: "Instagram", href: siteConfig.social.instagram, icon: InstagramIcon },
   { label: "Facebook", href: siteConfig.social.facebook, icon: FacebookIcon },
   { label: "X (Twitter)", href: siteConfig.social.x, icon: XIcon },
+  { label: "YouTube", href: siteConfig.social.youtube, icon: YoutubeIcon },
   { label: "LinkedIn", href: siteConfig.social.linkedin, icon: LinkedinIcon },
 ];
 
