@@ -3,6 +3,15 @@ import { RevealText } from "@/components/shared/reveal-text";
 import { Reveal } from "@/components/shared/reveal";
 import { ourStory } from "@/lib/our-story-data";
 
+// Brand accents, cycled one per sentence — turns the closing line into a
+// small rhythm of color instead of one flat block of muted ink.
+const closingColors = ["text-rust", "text-pine", "text-gold", "text-rust"];
+
+// "One child. One family. One community. One opportunity at a time." →
+// each "X." sentence gets its own color, split off the shared string in
+// lib/our-story-data.ts rather than duplicating the copy here.
+const closingSentences = ourStory.closing.match(/[^.]+\.\s*/g) ?? [ourStory.closing];
+
 export function VisionClosing() {
   return (
     <section className="grain-overlay relative isolate overflow-hidden bg-paper py-[clamp(4rem,8vw,8rem)]">
@@ -24,8 +33,12 @@ export function VisionClosing() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <p className="mt-12 border-t border-ink/15 pt-8 font-heading text-h4 text-balance text-ink/75">
-              {ourStory.closing}
+            <p className="mt-12 border-t border-ink/15 pt-8 font-heading text-h4 text-balance">
+              {closingSentences.map((sentence, index) => (
+                <span key={index} className={closingColors[index % closingColors.length]}>
+                  {sentence.trim()}{" "}
+                </span>
+              ))}
             </p>
           </Reveal>
         </div>

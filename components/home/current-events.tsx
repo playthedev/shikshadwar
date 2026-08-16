@@ -47,6 +47,11 @@ const currentEventSlides: EventSlide[] = [
   { src: "/images/gallery/education/edu-05.png", alt: "A non-formal education session at a Shikshadwar centre", ...currentEventContent },
   { src: "/images/gallery/healthcare/health-kdliver2.jpeg", alt: "A Liver Care Foundation health-awareness session for children and volunteers", ...currentEventContent },
   { src: "/images/gallery/livelihood/live-03.jpeg", alt: "A community member practising embroidery skills in a livelihood training session", ...currentEventContent },
+  {
+    src: "/images/home/impa-training-pamphlet.png",
+    alt: "IMPA insurance-marketing training programme flyer, run with the Rural Upliftment Foundation and National Insurance Academy",
+    ...currentEventContent,
+  },
 ];
 
 // Each slide here pulls its own image, blurb and CTA straight from the

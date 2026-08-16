@@ -24,13 +24,12 @@ export const siteConfig = {
     phoneHref: "tel:+919899840108",
     email: "contact@shikshadwarfoundation.org",
   },
-  // TODO: confirm live social profiles with the client before publishing —
-  // every href below is a placeholder like the legacy site's own "#" links.
   social: {
-    instagram: "#",
-    facebook: "#",
-    x: "#",
-    linkedin: "#",
+    instagram: "https://www.instagram.com/shikshadwarfoundation/",
+    facebook: "https://www.facebook.com/profile.php?id=61593185403122",
+    x: "https://x.com/Shikshadwarfoun",
+    linkedin: "https://www.linkedin.com/company/shikshadwar-foundation/?viewAsMember=true",
+    youtube: "https://youtube.com/@shikshadwarfoundation?feature=shared",
   },
 } as const;
 

@@ -2,21 +2,20 @@
 
 import Link from "next/link";
 import { DonateForm } from "@/components/forms/donate-form";
-import { cartTotal, clearCart, useCart } from "@/lib/cart-store";
+import { cartTotal, sponsorshipCart } from "@/lib/cart-store";
 
-export function CheckoutClient() {
-  const cart = useCart();
+/** Checks out only what's in `sponsorshipCart` — never a Support Us product. */
+export function SponsorshipCheckoutClient() {
+  const cart = sponsorshipCart.useCart();
   const total = cartTotal(cart);
 
   if (cart.length === 0) {
     return (
       <div className="rounded-(--radius) border border-border bg-surface p-10 text-center">
-        <p className="font-heading text-h4 text-ink">Your cart is empty.</p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Add a sponsorship or a product before checking out.
-        </p>
+        <p className="font-heading text-h4 text-ink">Your sponsorship cart is empty.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Sponsor a child before checking out.</p>
         <Link
-          href="/cart/"
+          href="/meet-our-stars/cart/"
           className="mt-6 inline-flex items-center justify-center rounded-(--radius) bg-rust px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-[var(--rust-strong)]"
         >
           Back to cart
@@ -69,7 +68,7 @@ export function CheckoutClient() {
           defaultAmount={total}
           lockAmount
           submitLabel="Donate now"
-          onSuccess={clearCart}
+          onSuccess={sponsorshipCart.clearCart}
         />
       </div>
     </div>

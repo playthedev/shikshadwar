@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import { GraduationCap, HeartPulse, FolderOpen, TrendingUp, TreePine } from "lucide-react";
 import { Container } from "@/components/shared/container";
@@ -16,8 +17,10 @@ const iconMap: Record<NonNullable<ImpactStat["icon"]>, typeof GraduationCap> = {
 };
 
 /**
- * "Lives touched" band — a solid rust panel with circular icon badges,
- * one per programme area, each counting up into view.
+ * "Lives touched" band — a solid rust panel with circular badges, one per
+ * programme area, each counting up into view. Badges show a real
+ * programme photo ringed in white; the lucide icon is only a fallback for
+ * any stat that doesn't carry an `image`.
  */
 export function ImpactBar() {
   return (
@@ -39,8 +42,19 @@ export function ImpactBar() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
               >
-                <span className="flex size-16 items-center justify-center rounded-full bg-paper md:size-20">
-                  <Icon className="size-7 text-rust md:size-8" strokeWidth={2} aria-hidden="true" />
+                <span className="relative flex size-16 items-center justify-center overflow-hidden rounded-full bg-paper ring-4 ring-paper/40 md:size-20">
+                  {stat.image ? (
+                    <Image
+                      src={stat.image}
+                      alt=""
+                      fill
+                      sizes="80px"
+                      quality={85}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <Icon className="size-7 text-rust md:size-8" strokeWidth={2} aria-hidden="true" />
+                  )}
                 </span>
                 <p className="font-heading text-h1 tabular-nums text-paper">
                   <CountingNumber value={stat.value} suffix={stat.suffix} />

@@ -7,18 +7,18 @@ import {
   LinkedinIcon,
   WhatsappIcon,
   XIcon,
+  YoutubeIcon,
 } from "@/components/shared/social-icons";
 import { footerAboutLinks, footerProgrammeLinks } from "@/lib/nav";
 import { siteConfig } from "@/lib/site-config";
 
 const whatsappNumber = siteConfig.contact.phoneHref.replace(/\D/g, "");
 
-// TODO: legacy site links these to "#" too — swap in real profile URLs once
-// the client provides them.
 const socialLinks = [
   { label: "Instagram", href: siteConfig.social.instagram, icon: InstagramIcon },
   { label: "Facebook", href: siteConfig.social.facebook, icon: FacebookIcon },
   { label: "X (Twitter)", href: siteConfig.social.x, icon: XIcon },
+  { label: "YouTube", href: siteConfig.social.youtube, icon: YoutubeIcon },
   { label: "WhatsApp", href: `https://wa.me/${whatsappNumber}`, icon: WhatsappIcon },
   { label: "LinkedIn", href: siteConfig.social.linkedin, icon: LinkedinIcon },
 ];
@@ -127,6 +127,20 @@ export function SiteFooter() {
               Refund & Cancellation
             </Link>
           </div>
+        </Container>
+        <Container className="pb-6 text-xs text-paper/50">
+          <p>
+            This site is built by{" "}
+            <a
+              href="https://www.nexmogen.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium hover:text-paper/80"
+            >
+              Nexmogen
+            </a>
+            .
+          </p>
         </Container>
       </div>
     </footer>

@@ -110,8 +110,7 @@ export function SiteHeader() {
           <Button
             render={<Link href={headerCtas[0].href} />}
             nativeButton={false}
-            variant="outline"
-            className="hidden h-10 rounded-(--radius) border-rust px-5 text-sm font-semibold text-rust hover:bg-rust/5 active:translate-y-0 lg:inline-flex"
+            className="hidden h-10 rounded-(--radius) bg-pine px-5 text-sm font-semibold text-primary-foreground hover:bg-[color-mix(in_oklch,var(--pine),black_12%)] active:translate-y-0 lg:inline-flex"
           >
             {headerCtas[0].label}
           </Button>
@@ -181,8 +180,7 @@ export function SiteHeader() {
                     <Link href={headerCtas[0].href} onClick={() => setMobileOpen(false)} />
                   }
                   nativeButton={false}
-                  variant="outline"
-                  className="mt-4 h-11 rounded-(--radius) border-rust text-sm font-semibold text-rust hover:bg-rust/5 active:translate-y-0"
+                  className="mt-4 h-11 rounded-(--radius) bg-pine text-sm font-semibold text-primary-foreground hover:bg-[color-mix(in_oklch,var(--pine),black_12%)] active:translate-y-0"
                 >
                   {headerCtas[0].label}
                 </Button>

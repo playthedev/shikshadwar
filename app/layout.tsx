@@ -5,6 +5,7 @@ import { PreconnectRazorpay } from "@/components/shared/preconnect-razorpay";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SocialRail } from "@/components/shared/social-rail";
+import { FloatingWhatsapp } from "@/components/shared/floating-whatsapp";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -131,6 +132,7 @@ export default function RootLayout({
         </main>
         <SiteFooter />
         <SocialRail />
+        <FloatingWhatsapp />
       </body>
     </html>
   );

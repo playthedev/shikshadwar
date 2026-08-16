@@ -78,7 +78,7 @@ export const trustees = [
     slug: "suraj-kumar-mandal",
     name: "Suraj Kumar Mandal",
     role: "Co-Founder & Trustee",
-    image: "/images/about/trustee-suraj-kumar-mandal.png",
+    image: "/images/about/trustee-suraj-kumar-mandal.jpg",
     bio: [
       "Suraj is a dedicated social development professional with over five years of experience designing and implementing community-based development programmes across education, youth development, public health, women's empowerment, environmental sustainability, community engagement and corporate social responsibility (CSR).",
       "He has worked with leading development organisations including Read India, Center for Catalyzing Change (C3), TB Alert India, Sponsor A Child Foundation, Children International and Blue Planet Environmental Solutions — leading community mobilisation, volunteer engagement, stakeholder coordination and partnerships with government departments, educational institutions, healthcare providers and corporate CSR partners.",
@@ -89,7 +89,7 @@ export const trustees = [
     slug: "silky-aggarwal",
     name: "Silky Aggarwal",
     role: "Trustee",
-    image: "/images/about/trustee-silky-aggarwal.png",
+    image: "/images/about/trustee-silky-aggarwal.jpg",
     bio: [
       "Silky is a dedicated development sector professional with nearly a decade of experience in the social impact ecosystem, known for combining compassion with professionalism. She has worked with Sarthak Educational Trust, Udayan Care and TeamLease Foundation, strengthening financial management systems, transparency, regulatory compliance, donor reporting and effective use of resources.",
       "Her expertise in financial planning, budgeting, grant management and organisational accountability helps social programmes run more efficiently and sustainably. As a Trustee of Shikshadwar Foundation, she supports strategic planning, financial governance and programme implementation across education, skill development, women's empowerment, youth leadership and environmental sustainability.",
@@ -106,7 +106,7 @@ export const team = [
     slug: "geeta",
     name: "Geeta",
     role: "Volunteer cum Community Mobilizer",
-    image: undefined,
+    image: "/images/about/team-geeta.jpg",
     bio: [
       "Geeta works at the frontline of Shikshadwar's community outreach, going door-to-door to bring families into our education and livelihood programmes. Her familiarity with the neighbourhoods we serve makes her one of the first trusted faces new families meet.",
       "Beyond mobilisation, she helps coordinate attendance drives and community meetings, making sure the people our programmes are built for have a say in how they run.",
@@ -126,7 +126,7 @@ export const team = [
     slug: "karan-rajput",
     name: "Karan Rajput",
     role: "Volunteer Teacher",
-    image: undefined,
+    image: "/images/about/team-karan-rajput.jpg",
     bio: [
       "Karan brings energy and consistency to Shikshadwar's after-school learning sessions, working with children across multiple grade levels in our programme areas.",
       "He's especially focused on keeping children engaged through hands-on, activity-based learning rather than rote instruction.",
@@ -140,6 +140,26 @@ export const team = [
     bio: [
       "Asha connects Shikshadwar's programmes with the families who need them most, building the trust that keeps children enrolled and attending consistently.",
       "She works closely with parents and local community leaders to identify gaps our programmes can address, from school dropouts to healthcare access.",
+    ],
+  },
+  {
+    slug: "neha",
+    name: "Neha",
+    role: "Volunteer Teacher",
+    image: "/images/about/team-neha.jpg",
+    bio: [
+      "Neha teaches at one of Shikshadwar's learning centres, helping students build the foundational skills they need to stay on track at school.",
+      "She works closely with the rest of the teaching team to keep lessons consistent and engaging across every grade level in her centre.",
+    ],
+  },
+  {
+    slug: "nisha",
+    name: "Nisha",
+    role: "Volunteer Teacher",
+    image: "/images/about/team-nisha.jpg",
+    bio: [
+      "Nisha teaches at one of Shikshadwar's learning centres, helping students build the foundational skills they need to stay on track at school.",
+      "She works closely with the rest of the teaching team to keep lessons consistent and engaging across every grade level in her centre.",
     ],
   },
 ];
