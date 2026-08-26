@@ -8,7 +8,7 @@ import {
   GraduationCap,
   HeartPulse,
   Briefcase,
-  TrendingUp,
+  Rocket,
   TreePine,
   UserSearch,
   FileText,
@@ -103,6 +103,8 @@ export interface Programme {
   image?: ProgrammeImage;
   /** Thematic icon shown in the dummy placeholder illustration when no photo exists yet. */
   icon?: LucideIcon;
+  /** The brand's themed icon artwork (from the client's reference icon set) — shown as a real badge on the Home programme grid and the programme's own hero, in place of a lucide glyph. */
+  iconImage?: string;
   /** Full body copy from the legacy programme page, paragraph by paragraph. */
   intro: string[];
   /** The intro narrative split into named sub-sections, e.g. "Why Education" then "What We Do" — supersedes the flat `intro` rendering when present. Each section may carry its own supporting image. */
@@ -170,6 +172,7 @@ export const programmes: Programme[] = [
       "Focused on people belonging to marginalized communities for better income and enhanced quality of life.",
     photoCaption: "Livelihood skill-training session, Kadipur",
     icon: Briefcase,
+    iconImage: "/images/icons/impact/livelihood.png",
     image: {
       src: "/images/gallery/livelihood/live-03.jpeg",
       alt: "A community member practising embroidery skills in a Shikshadwar livelihood session",
@@ -226,8 +229,8 @@ export const programmes: Programme[] = [
           "The programme aims to enhance employability, improve financial inclusion, and enable youth to build sustainable careers in one of India's rapidly growing service sectors.",
         ],
         image: {
-          src: "/images/gallery/livelihood/live-07.png",
-          alt: "A group of young people mobilized through a Shikshadwar livelihood outreach visit",
+          src: "/images/gallery/youth-development/youth-04.jpg",
+          alt: "IMPA trainees pose with their Certificates of Completion at a Shikshadwar-run insurance marketing training batch",
         },
       },
     ],
@@ -236,6 +239,7 @@ export const programmes: Programme[] = [
       { src: "/images/gallery/livelihood/live-02.jpeg", alt: "A community member practising embroidery skills in a Shikshadwar livelihood session" },
       { src: "/images/gallery/livelihood/live-04.jpeg", alt: "An embroidery skill-training session run by Shikshadwar" },
       { src: "/images/gallery/livelihood/live-05.jpeg", alt: "Raw materials being organised for a Shikshadwar livelihood programme" },
+      { src: "/images/gallery/youth-development/youth-03.jpg", alt: "A smaller batch of IMPA trainees pose with their Certificates of Completion" },
     ],
   },
   {
@@ -249,6 +253,7 @@ export const programmes: Programme[] = [
       "Holistic education model — academic excellence with emotional intelligence and life skills.",
     photoCaption: "Students in a Shikshadwar remedial classroom, Bhalaswa",
     icon: BookOpen,
+    iconImage: "/images/icons/impact/education.png",
     image: {
       src: "/images/programmes/education.jpg",
       alt: "Students at a government school follow a digital lesson on a smartboard as part of Shikshadwar's education programme",
@@ -395,6 +400,10 @@ export const programmes: Programme[] = [
           "Together with our donors, sponsors, and corporate partners, we are transforming educational aspirations into lifelong opportunities.",
       },
     ],
+    gallery: [
+      { src: "/images/gallery/education/edu-24.png", alt: "Children cheer with their fists raised in front of the Shikshadwar Foundation banner" },
+      { src: "/images/gallery/education/edu-25.jpg", alt: "Children hold hands in a circle during an outdoor group activity at a Shikshadwar programme centre" },
+    ],
   },
   {
     slug: "youth-empowerment",
@@ -404,7 +413,8 @@ export const programmes: Programme[] = [
     tag: "pine",
     summary: "Empower. Skill. Employ. Transform. — building youth as leaders of social change.",
     photoCaption: "Youth leadership workshop",
-    icon: TrendingUp,
+    icon: Rocket,
+    iconImage: "/images/icons/impact/youth-empowerment.png",
     image: {
       src: "/images/programmes/youth-development.png",
       alt: "Young people hold up hand-lettered English grammar flashcards during a Shikshadwar youth empowerment session",
@@ -452,6 +462,31 @@ export const programmes: Programme[] = [
       { text: "Leadership and Life Skills", icon: Award },
       { text: "Mentorship and Career Support", icon: HandHeart },
     ],
+    subProgrammesHeading: "Campaigns 2026–27",
+    subProgrammesEyebrow: "Campaign",
+    subProgrammes: [
+      {
+        title: "30-Day Youth Mentorship Campaign",
+        icon: HandHeart,
+        paragraphs: [
+          "Every young person has potential. Sometimes, they simply need the right guidance, the right mentor, and a clear pathway to move forward. As part of our Youth Development Programme, Shikshadwar Foundation is launching a 30-Day Youth Mentorship Campaign to connect young people with experienced professionals, industry experts, mentors, and entrepreneurs.",
+          "Through our recent youth training initiatives, including the IMPA Training Programme, we observed that many young people face a gap between accessing opportunities and knowing how to build a sustainable career or livelihood pathway. We identified three key groups of young people: those seeking immediate employment to support themselves and their families, those seeking direction, professional guidance and opportunities to build a better future, and young entrepreneurs who need expert guidance, industry exposure, and mentorship to overcome challenges and grow.",
+          "We invite professionals, entrepreneurs, young people, and community members to join this initiative and contribute to building a stronger and more empowered generation. Let us come together to create pathways, build confidence, and empower young people to turn their ideas into action and aspirations into achievements.",
+        ],
+        bulletsLabel: "Who We Are Looking For",
+        bullets: [
+          "Mentors — experienced professionals, entrepreneurs, industry experts and subject-matter specialists willing to share their knowledge, experience and guidance with young people",
+          "Mentees / Youth — young people with aspirations, ideas or career goals who need guidance and a clear pathway to achieve them",
+          "Young Entrepreneurs — individuals who have started working on their business ideas and are looking for mentorship to strengthen, develop and scale their initiatives",
+        ],
+        closing:
+          "One conversation can create direction. One mentor can change a journey. One opportunity can transform a life.",
+        image: {
+          src: "/images/campaigns/youth-mentorship-poster.jpg",
+          alt: "30-Day Youth Mentorship Campaign poster: Guidance Today, Success Tomorrow — Shikshadwar Foundation",
+        },
+      },
+    ],
     workImage: {
       src: "/images/how-we-work-2.png",
       alt: "Shikshadwar's seven-step Youth Empowerment pathway: Mobilisation, Enrolment, Livelihood Skills Training (3/4 months), Industry Exposure, Career Counseling, Placement Support, and Post-Placement Support",
@@ -465,6 +500,10 @@ export const programmes: Programme[] = [
     gallery: [
       { src: "/images/gallery/youth-development/youth-01.png", alt: "Young people taking part in a Shikshadwar youth empowerment session" },
       { src: "/images/gallery/youth-development/youth-02.jpeg", alt: "Young people taking part in a Shikshadwar youth empowerment session" },
+      { src: "/images/gallery/youth-development/mentorship-01.jpeg", alt: "A Shikshadwar volunteer leads a Career Pathway mentorship talk for students at a government girls' school" },
+      { src: "/images/gallery/youth-development/mentorship-02.jpeg", alt: "Students listen to a Career Pathway mentorship session at a government girls' school" },
+      { src: "/images/gallery/youth-development/mentorship-03.jpeg", alt: "A large assembly of students at a Shikshadwar Career Pathway mentorship session" },
+      { src: "/images/gallery/youth-development/mentorship-04.jpeg", alt: "Rows of students seated for a Shikshadwar Career Pathway mentorship session at a government girls' school" },
     ],
   },
   {
@@ -477,6 +516,7 @@ export const programmes: Programme[] = [
       "Collaboration with government and civil society for quality healthcare services.",
     photoCaption: "Community health camp",
     icon: HeartPulse,
+    iconImage: "/images/icons/impact/health.png",
     image: {
       src: "/images/programmes/healthcare.jpg",
       alt: "Community members set up an insecticide-treated mosquito net as part of a Shikshadwar healthcare awareness session",
@@ -525,6 +565,7 @@ export const programmes: Programme[] = [
       "Awareness and eco-friendly household and agricultural practices in a rural context.",
     photoCaption: "Community tree-planting drive",
     icon: TreePine,
+    iconImage: "/images/icons/impact/environment-sustainability.png",
     image: {
       src: "/images/programmes/sustainable-development.jpg",
       alt: "A child plants a sapling on open ground as part of Shikshadwar's sustainable development programme",
@@ -567,6 +608,8 @@ export const programmes: Programme[] = [
       { src: "/images/gallery/sustainable-development/SCH-ENVIRONMENT-7.jpeg", alt: "A Shikshadwar environmental-awareness session at a Delhi government school" },
       { src: "/images/gallery/sustainable-development/SCH-ENVIRONMENT-11.jpeg", alt: "Students take part in a Shikshadwar environmental-awareness activity at school" },
       { src: "/images/gallery/sustainable-development/SCH-ENVIRONMENT-13.jpeg", alt: "A Shikshadwar tree-plantation drive at a Delhi school" },
+      { src: "/images/gallery/sustainable-development/tree-planting-girls.jpg", alt: "Two students point to a sapling they planted as part of a Shikshadwar tree-plantation drive" },
+      { src: "/images/gallery/sustainable-development/tree-awareness-classroom.jpg", alt: "A Shikshadwar volunteer teaches a classroom about plants as part of an environmental-awareness session" },
     ],
   },
 ];

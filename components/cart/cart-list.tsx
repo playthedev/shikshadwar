@@ -17,11 +17,14 @@ export function CartList({
   checkoutHref,
   onUpdateQuantity,
   onRemove,
+  totalsLabel = "Cart totals",
 }: {
   items: CartItem[];
   checkoutHref: string;
   onUpdateQuantity: (slug: string, variantLabel: string | undefined, quantity: number) => void;
   onRemove: (slug: string, variantLabel?: string) => void;
+  /** Heading over the totals card — "Sponsorship total" on Meet Our Stars, "Cart totals" elsewhere. */
+  totalsLabel?: string;
 }) {
   const total = cartTotal(items);
 
@@ -106,7 +109,7 @@ export function CartList({
       </div>
 
       <div className="h-fit rounded-(--radius) border border-border bg-surface p-6">
-        <p className="text-eyebrow text-rust uppercase">Cart totals</p>
+        <p className="text-eyebrow text-rust uppercase">{totalsLabel}</p>
 
         <div className="mt-6 flex items-center justify-between border-t border-border pt-6">
           <p className="font-heading text-lg text-ink">Estimated total</p>

@@ -38,6 +38,7 @@ export function SponsorshipCartClient() {
         checkoutHref="/meet-our-stars/checkout/"
         onUpdateQuantity={sponsorshipCart.updateQuantity}
         onRemove={sponsorshipCart.removeFromCart}
+        totalsLabel="Sponsorship total"
       />
     </div>
   );

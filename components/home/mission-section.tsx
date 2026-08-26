@@ -26,7 +26,7 @@ export function MissionSection() {
                   fill
                   sizes="(min-width: 1024px) 42vw, 100vw"
                   quality={92}
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
               </div>
             </MaskReveal>

@@ -22,9 +22,12 @@ const orderFields = z.object({
     .string()
     .trim()
     .regex(/^[0-9+\-\s()]{7,20}$/, "Please enter a valid phone number."),
-  // TEMP: format/requiredness validation disabled for testing — restore the
-  // regex + superRefine below before going live.
-  pan: z.string().trim().optional().or(z.literal("")),
+  pan: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/, "Please enter a valid PAN.")
+    .optional()
+    .or(z.literal("")),
   dateOfBirth: z.string().trim().optional().or(z.literal("")),
   address: z.string().trim().max(300).optional().or(z.literal("")),
   pincode: z
@@ -39,18 +42,15 @@ const orderFields = z.object({
   purpose: z.string().trim().max(120).optional(),
 });
 
-// TEMP: PAN-required-above-₹2000 rule disabled for testing — swap back to
-// the superRefine below before going live.
-export const createOrderSchema = orderFields;
-// export const createOrderSchema = orderFields.superRefine((values, ctx) => {
-//   if (values.amount > PAN_REQUIRED_ABOVE_INR && !values.pan) {
-//     ctx.addIssue({
-//       code: "custom",
-//       path: ["pan"],
-//       message: `PAN is required for donations above ₹${PAN_REQUIRED_ABOVE_INR.toLocaleString("en-IN")} to claim your 80G tax exemption.`,
-//     });
-//   }
-// });
+export const createOrderSchema = orderFields.superRefine((values, ctx) => {
+  if (values.amount > PAN_REQUIRED_ABOVE_INR && !values.pan) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["pan"],
+      message: `PAN is required for donations above ₹${PAN_REQUIRED_ABOVE_INR.toLocaleString("en-IN")} to claim your 80G tax exemption.`,
+    });
+  }
+});
 
 export type CreateOrderInput = z.infer<typeof orderFields>;
 
