@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { GraduationCap, HeartPulse, FolderOpen, TrendingUp, TreePine } from "lucide-react";
+import { GraduationCap, HeartPulse, Briefcase, Rocket, TreePine } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { CountingNumber } from "@/components/shared/counting-number";
 import { beneficiaryStats } from "@/lib/impact-stats";
@@ -11,16 +11,17 @@ import type { ImpactStat } from "@/lib/impact-stats";
 const iconMap: Record<NonNullable<ImpactStat["icon"]>, typeof GraduationCap> = {
   education: GraduationCap,
   health: HeartPulse,
-  livelihood: FolderOpen,
-  youth: TrendingUp,
+  livelihood: Briefcase,
+  youth: Rocket,
   tree: TreePine,
 };
 
 /**
  * "Lives touched" band — a solid rust panel with circular badges, one per
- * programme area, each counting up into view. Badges show a real
- * programme photo ringed in white; the lucide icon is only a fallback for
- * any stat that doesn't carry an `image`.
+ * programme area, each counting up into view. Badges show the brand's
+ * themed icon artwork (per the client's reference icon set) ringed in
+ * white; the lucide icon is only a fallback for any stat that doesn't
+ * carry an `image`.
  */
 export function ImpactBar() {
   return (

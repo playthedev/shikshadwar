@@ -10,14 +10,14 @@ import { programmes } from "@/lib/programmes";
  */
 export function ProgrammeTicker() {
   return (
-    <nav aria-label="Programmes" className="relative border-y border-ink/10 bg-ink py-5 md:py-7">
+    <nav aria-label="Programmes" className="relative border-y border-ink/10 bg-[color-mix(in_oklch,var(--pine),white_65%)] py-5 md:py-7">
       <VelocityMarquee repeat={3} baseVelocity={1.8} className="edge-fade-x">
         <ul className="flex items-center gap-8 pr-8 md:gap-14 md:pr-14">
           {programmes.map((programme) => (
             <li key={programme.slug} className="flex items-center gap-8 md:gap-14">
               <Link
                 href={`/${programme.slug}/`}
-                className="group relative font-heading text-2xl tracking-tight whitespace-nowrap text-paper/55 transition-colors duration-300 hover:text-paper md:text-4xl"
+                className="group relative font-heading text-2xl tracking-tight whitespace-nowrap text-ink/60 transition-colors duration-300 hover:text-ink md:text-4xl"
               >
                 {programme.title}
                 <span

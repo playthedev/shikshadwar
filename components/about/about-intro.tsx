@@ -28,7 +28,7 @@ export function AboutIntro() {
       <Container>
         <Reveal>
           <h2 className="text-center font-heading text-4xl leading-[1.1] tracking-wide text-black uppercase md:text-5xl">
-            Why Shikshadwar
+            Why Shikshadwar Foundation
           </h2>
         </Reveal>
 

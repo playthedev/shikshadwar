@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/shared/container";
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
@@ -43,6 +44,22 @@ export function ProgrammeHero({ programme }: { programme: Programme }) {
             {programme.title}
           </span>
         </nav>
+
+        {programme.iconImage ? (
+          <span
+            aria-hidden="true"
+            className="mx-auto mb-6 flex size-16 items-center justify-center overflow-hidden rounded-full shadow-lg ring-2 ring-white/70 md:size-20"
+          >
+            <Image
+              src={programme.iconImage}
+              alt=""
+              width={80}
+              height={80}
+              quality={90}
+              className="size-full object-cover"
+            />
+          </span>
+        ) : null}
 
         <h1 className="hero-heading-shadow mx-auto max-w-4xl text-display text-white uppercase">
           {programme.heroHeadline}

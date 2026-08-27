@@ -30,6 +30,8 @@ const newEducationImages: GalleryImage[] = [
   { file: "edu-21.jpg", alt: "Children take part in a Shikshadwar non-formal education session" },
   { file: "edu-22.jpeg", alt: "Children hold hands during an outdoor activity at a Shikshadwar programme centre" },
   { file: "edu-23.jpg", alt: "A mother and her children stand together in front of a Shikshadwar Foundation banner" },
+  { file: "edu-24.png", alt: "Children cheer with their fists raised in front of the Shikshadwar Foundation banner" },
+  { file: "edu-25.jpg", alt: "Children hold hands in a circle during an outdoor group activity at a Shikshadwar programme centre" },
 ].map(({ file, alt }) => ({
   src: `/images/gallery/education/${file}`,
   alt,
@@ -133,5 +135,35 @@ export const galleryImages: GalleryImage[] = [
     alt: "A Shikshadwar trainee receives his SkillServ insurance-marketing certificate of completion",
     category: "youth-empowerment",
   },
+  {
+    src: "/images/gallery/youth-development/mentorship-01.jpeg",
+    alt: "A Shikshadwar volunteer leads a Career Pathway mentorship talk for students at a government girls' school",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/mentorship-02.jpeg",
+    alt: "Students listen to a Career Pathway mentorship session at a government girls' school",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/mentorship-03.jpeg",
+    alt: "A large assembly of students at a Shikshadwar Career Pathway mentorship session",
+    category: "youth-empowerment",
+  },
+  {
+    src: "/images/gallery/youth-development/mentorship-04.jpeg",
+    alt: "Rows of students seated for a Shikshadwar Career Pathway mentorship session at a government girls' school",
+    category: "youth-empowerment",
+  },
   ...sustainableDevelopmentImages,
+  {
+    src: "/images/gallery/sustainable-development/tree-planting-girls.jpg",
+    alt: "Two students point to a sapling they planted as part of a Shikshadwar tree-plantation drive",
+    category: "sustainable-development",
+  },
+  {
+    src: "/images/gallery/sustainable-development/tree-awareness-classroom.jpg",
+    alt: "A Shikshadwar volunteer teaches a classroom about plants as part of an environmental-awareness session",
+    category: "sustainable-development",
+  },
 ];

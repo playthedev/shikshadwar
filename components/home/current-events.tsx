@@ -31,6 +31,8 @@ interface EventSlide {
    * poster with a cream background) where a blur just reads as washed-out
    * blank space instead of a backdrop. */
   blurBackdrop?: boolean;
+  /** Opens the CTA in a new tab — for slides linking off-site, e.g. a Google Form. */
+  external?: boolean;
 }
 
 const currentEventContent = {
@@ -50,7 +52,26 @@ const currentEventSlides: EventSlide[] = [
   {
     src: "/images/home/impa-training-pamphlet.png",
     alt: "IMPA insurance-marketing training programme flyer, run with the Rural Upliftment Foundation and National Insurance Academy",
-    ...currentEventContent,
+    eyebrow: "IMPA Training Programme",
+    title: "Become a certified Insurance Marketing Personnel",
+    description:
+      "IRDAI-recognised training run with the Rural Upliftment Foundation and National Insurance Academy — register to join the next batch.",
+    ctaLabel: "Register Now",
+    ctaHref: "https://forms.gle/UYz9za5Juhno7ZmS6",
+    external: true,
+  },
+  {
+    src: "/images/campaigns/youth-mentorship-poster.jpg",
+    alt: "30-Day Youth Mentorship Campaign poster: Guidance Today, Success Tomorrow — Shikshadwar Foundation",
+    eyebrow: "30-Day Mentorship Campaign",
+    title: "Guidance today, success tomorrow",
+    description:
+      "Connecting young people with experienced professionals, industry experts and entrepreneurs — as a mentor or a mentee, register to join the campaign.",
+    ctaLabel: "Register Now",
+    ctaHref: "https://forms.gle/cqKZB2gGwDEBEvMe7",
+    external: true,
+    fit: "contain",
+    blurBackdrop: false,
   },
 ];
 
@@ -251,6 +272,8 @@ function EventCard({
 
             <Link
               href={slide.ctaHref}
+              target={slide.external ? "_blank" : undefined}
+              rel={slide.external ? "noopener noreferrer" : undefined}
               className={cn(
                 "group/cta relative mt-7 inline-flex w-fit items-center gap-2 rounded-(--radius) px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors",
                 accentButton[accent],

@@ -1,11 +1,26 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { PageHero } from "@/components/shared/page-hero";
+import { ProgrammeHeroSlideshow } from "@/components/programme/programme-hero-slideshow";
 import { Reveal } from "@/components/shared/reveal";
 import { DonateForm } from "@/components/forms/donate-form";
 import { siteConfig } from "@/lib/site-config";
+
+const donateSlides = [
+  {
+    src: "/images/campaigns/donate-01.jpg",
+    alt: "Children hold their own notebooks in front of the Shikshadwar Foundation banner",
+    objectPosition: "center 20%",
+  },
+  {
+    src: "/images/campaigns/donate-02.png",
+    alt: "Children cheer with their fists raised in front of the Shikshadwar Foundation banner",
+    objectPosition: "center 25%",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Donate Now",
@@ -32,10 +47,10 @@ export default function DonatePage() {
       <PageHero
         breadcrumb="Donate"
         title="Fund a plan, not just a moment."
-        image={{ src: "/images/hero/slide-02.png", alt: "", objectPosition: "center 30%" }}
+        background={<ProgrammeHeroSlideshow images={donateSlides} />}
       />
 
-      <section className="py-[clamp(4rem,8vw,8rem)]">
+      <section className="py-[clamp(2.5rem,5vw,5rem)]">
         <Container>
           <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
             {/* The form leads on the wider column. Everything in the right-hand
@@ -55,7 +70,18 @@ export default function DonatePage() {
 
             <Reveal delay={0.1} className="lg:col-span-4 lg:col-start-9">
               <div className="lg:sticky lg:top-28">
-                <h2 className="font-heading text-h3 text-balance text-ink">
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-(--radius) bg-pine-tint">
+                  <Image
+                    src="/images/campaigns/donate-cutout.png"
+                    alt="Children hold their notebooks, ready for the school day, thanks to Shikshadwar Foundation donors"
+                    fill
+                    sizes="(min-width: 1024px) 30vw, 100vw"
+                    quality={92}
+                    className="object-contain object-bottom"
+                  />
+                </div>
+
+                <h2 className="mt-8 font-heading text-h3 text-balance text-ink">
                   Every rupee is accounted for.
                 </h2>
 

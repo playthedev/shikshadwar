@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
@@ -13,26 +14,31 @@ import { cn } from "@/lib/utils";
   five in one pass instead of stopping at whichever photograph is largest.
 */
 
-const toneClasses: Record<Programme["tag"], { badge: string; icon: string; underline: string }> = {
-  rust: { badge: "bg-rust-tint", icon: "text-rust", underline: "bg-rust" },
-  pine: { badge: "bg-pine-tint", icon: "text-pine", underline: "bg-pine" },
+const toneClasses: Record<Programme["tag"], { underline: string }> = {
+  rust: { underline: "bg-rust" },
+  pine: { underline: "bg-pine" },
 };
 
 function ProgrammeEntry({ programme, index }: { programme: Programme; index: number }) {
   const tones = toneClasses[programme.tag];
-  const Icon = programme.icon;
 
   return (
     <Reveal delay={index * 0.06}>
       <Link href={`/${programme.slug}/`} className="group flex items-start gap-5">
         <span
           aria-hidden="true"
-          className={cn(
-            "flex size-16 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-105",
-            tones.badge,
-          )}
+          className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-sm ring-1 ring-ink/5 transition-transform duration-300 group-hover:scale-105"
         >
-          {Icon ? <Icon className={cn("size-7", tones.icon)} strokeWidth={1.75} /> : null}
+          {programme.iconImage ? (
+            <Image
+              src={programme.iconImage}
+              alt=""
+              fill
+              sizes="64px"
+              quality={90}
+              className="object-cover"
+            />
+          ) : null}
         </span>
 
         <div className="min-w-0 pt-1">

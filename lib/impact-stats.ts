@@ -20,7 +20,7 @@ export const beneficiaryStats: ImpactStat[] = [
     label: "Lives touched — Education",
     shortLabel: "Education",
     icon: "education",
-    image: "/images/programmes/education.jpg",
+    image: "/images/icons/impact/education.png",
   },
   {
     value: 476,
@@ -28,7 +28,7 @@ export const beneficiaryStats: ImpactStat[] = [
     label: "Lives touched — Healthcare",
     shortLabel: "Health",
     icon: "health",
-    image: "/images/gallery/healthcare/health-01.jpg",
+    image: "/images/icons/impact/health.png",
   },
   {
     value: 59,
@@ -36,7 +36,7 @@ export const beneficiaryStats: ImpactStat[] = [
     label: "Lives touched — Livelihood",
     shortLabel: "Livelihood",
     icon: "livelihood",
-    image: "/images/gallery/livelihood/live-01.jpeg",
+    image: "/images/icons/impact/livelihood.png",
   },
   {
     value: 100,
@@ -44,7 +44,7 @@ export const beneficiaryStats: ImpactStat[] = [
     label: "Lives touched — Youth Empowerment",
     shortLabel: "Youth Development",
     icon: "youth",
-    image: "/images/gallery/youth-development/youth-02.jpeg",
+    image: "/images/icons/impact/youth-empowerment.png",
   },
   {
     value: 100,
@@ -52,7 +52,7 @@ export const beneficiaryStats: ImpactStat[] = [
     label: "Saplings planted — Environment Sustainability",
     shortLabel: "Tree Plantation",
     icon: "tree",
-    image: "/images/programmes/sustainable-development.jpg",
+    image: "/images/icons/impact/environment-sustainability.png",
   },
 ];
 
