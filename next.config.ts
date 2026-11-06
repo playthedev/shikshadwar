@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   // Legacy WordPress URLs were all trailing-slash (/about-us/, /education/...).
   // Matching that exactly preserves existing search rankings without redirects.
   trailingSlash: true,
+  // Lets a phone on the same Wi-Fi open the dev server (http://<LAN-IP>:3000).
+  // Without this Next blocks its dev scripts, the page never hydrates, and
+  // client-side state (e.g. the Razorpay "loading gateway" button) never updates.
+  // Dev-only: has no effect on production builds.
+  allowedDevOrigins: ["192.168.1.9"],
   images: {
     formats: ["image/avif", "image/webp"],
     // 85 is the general content-photo tier; 92 is reserved for above-the-fold

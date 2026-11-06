@@ -41,6 +41,7 @@ export function DonateForm({
   maxQuantity = 10,
   submitLabel = "Donate now",
   lockAmount = false,
+  minimal = false,
   onSuccess,
 }: {
   /** Tags the order so the sidebar CTAs on Sponsor a Child / Donate a Tree route to the same checkout with a distinct purpose. */
@@ -63,6 +64,8 @@ export function DonateForm({
   submitLabel?: string;
   /** Renders the amount as a fixed read-only total instead of the preset/custom picker — for checkouts (e.g. the cart) where the amount is already decided. */
   lockAmount?: boolean;
+  /** Collects only name, email and mobile — hides DOB, address, PAN and the 80G note. For shareable quick-donate links. */
+  minimal?: boolean;
   /** Called once a payment is confirmed as paid, e.g. to clear a cart. */
   onSuccess?: () => void;
 } = {}) {
@@ -339,13 +342,14 @@ export function DonateForm({
         <p className="text-xs text-muted-foreground">Special characters are not allowed in the full name field.</p>
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <div>
+          <div className={minimal ? "sm:col-span-2" : undefined}>
             <Label htmlFor="name">Full name</Label>
             <Input id="name" className="mt-1.5" autoComplete="name" {...register("name")} />
             {errors.name ? (
               <p className="mt-1.5 text-xs text-destructive">{errors.name.message}</p>
             ) : null}
           </div>
+          {minimal ? null : (
           <div>
             <Label htmlFor="dob">Date of birth</Label>
             <Input
@@ -359,6 +363,7 @@ export function DonateForm({
               <p className="mt-1.5 text-xs text-destructive">{errors.dateOfBirth.message}</p>
             ) : null}
           </div>
+          )}
           <div>
             <Label htmlFor="email">Email</Label>
             <Input
@@ -379,6 +384,8 @@ export function DonateForm({
               <p className="mt-1.5 text-xs text-destructive">{errors.phone.message}</p>
             ) : null}
           </div>
+          {minimal ? null : (
+          <>
           <div className="sm:col-span-2">
             <Label htmlFor="address">Address</Label>
             <Input
@@ -452,6 +459,8 @@ export function DonateForm({
             Please note that if you do not provide your PAN Number, you will not be able to claim
             50% tax exemption u/s 80G in India.
           </div>
+          </>
+          )}
         </div>
 
         {errorMessage ? (

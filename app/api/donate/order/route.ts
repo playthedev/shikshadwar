@@ -3,7 +3,11 @@ import { randomUUID } from "crypto";
 import { connectToDatabase } from "@/lib/mongodb";
 import { DonationModel } from "@/lib/models/donation";
 import { getRazorpayInstance } from "@/lib/razorpay";
-import { createOrderSchema } from "@/lib/validations/donate-schema";
+import {
+  createOrderSchema,
+  QUICK_DONATION_INR,
+  QUICK_DONATION_PURPOSE,
+} from "@/lib/validations/donate-schema";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -21,8 +25,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { amount, name, email, phone, pan, dateOfBirth, address, pincode, city, state, country, purpose } =
+  const { name, email, phone, pan, dateOfBirth, address, pincode, city, state, country, purpose } =
     parsed.data;
+  const amount = purpose === QUICK_DONATION_PURPOSE ? QUICK_DONATION_INR : parsed.data.amount;
   const amountInPaise = amount * 100;
 
   const keyId = process.env.RAZORPAY_KEY_ID;
