@@ -10,6 +10,11 @@ export const MAX_DONATION_INR = 500_000;
 // tax-exemption receipt — below it, PAN stays optional.
 export const PAN_REQUIRED_ABOVE_INR = 2000;
 
+// The shareable /quick-donate/ link has a fixed amount. The order API enforces
+// it server-side for this purpose so the client can't change the price.
+export const QUICK_DONATION_PURPOSE = "quick-donation";
+export const QUICK_DONATION_INR = 251;
+
 const orderFields = z.object({
   amount: z
     .number({ error: "Enter an amount." })
